@@ -71,8 +71,9 @@ Vor Abschluss einer normalen Änderung insbesondere Repository-Zustand, Bearbeit
 ## Repository-spezifische Regeln
 
 - Dieses Repository ist eine **öffentliche Ausgabefläche**, kein Entwicklungs-Repository für die einzelnen Anwendungen.
-- Root-`index.html` und `README.md` dienen der Navigation und Release-Governance; Anwendungsartefakte liegen nur in benannten Unterverzeichnissen.
+- Root-`index.html` mit `router.mjs` bildet ausschließlich den Deep-Link-Einstieg (ohne öffentlich sichtbare Anwendungsliste); `README.md` dokumentiert die Veröffentlichung. Anwendungsartefakte liegen nur in benannten Unterverzeichnissen.
 - `pdf-review/` wird ausschließlich aus dem gebauten `dist/` von `context-loom/pdf-review` aktualisiert, `compliance-traceability/` ausschließlich aus explizit freigegebenen Viewer- und JSON-Artefakten.
 - Keine Vollsynchronisation vom Quellprojekt in den Repository-Root. Die anderen Demos dürfen durch ein Deployment nicht gelöscht oder überschrieben werden.
 - Vor jedem Release auf öffentlich sichtbare personenbezogene, kundenspezifische, betriebliche oder geheime Inhalte prüfen.
 - PDFs, Schriftarten, Third-Party-Code und Lizenzen nicht verändern und Lizenztexte mit übertragen.
+- Verschleierte Links über `scripts/create_deep_link.mjs` erzeugen und niemals in öffentliche Dateien schreiben; `scripts/test_deep_link.mjs` nach Änderungen am Router ausführen. Die Verschleierung ersetzt keine Authentifizierung.
