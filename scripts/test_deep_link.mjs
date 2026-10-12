@@ -1,11 +1,12 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
+import {fileURLToPath} from 'node:url';
 import {spawnSync} from 'node:child_process';
 import {webcrypto} from 'node:crypto';
 import vm from 'node:vm';
 
-const root = resolve(import.meta.dirname, '..');
+const root = fileURLToPath(new URL('..', import.meta.url));
 const routerCode = readFileSync(resolve(root, 'router.mjs'), 'utf8').replace('void openLink();', 'globalThis.testPromise = openLink();');
 
 function makeToken(path) {
