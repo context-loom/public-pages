@@ -1,57 +1,87 @@
 /**
- * Stateless deep-link obfuscation router. The decryption key is embedded in the
- * URL fragment along with the ciphertext. This is concealment, NOT access control.
- * Nothing is authenticated server-side. Direct destination URLs remain public.
- *
- * Format: #go=v1.<base64url(12-byte-iv)>.<base64url(ciphertext+tag)>.<base64url(32-byte-key)>
+ * Public Pages: client-side destination obfuscation, not access control.
+ * The visitor enters a random code. PBKDF2 derives an AES-GCM key that
+ * decrypts one relative destination from the public routes.json file.
+ * Neither codes nor plaintext targets are embedded in this router.
  */
-const status = document.getElementById('status');
+
+const ITERATIONS = 180_000;
+const CODE_PATTERN = /^[A-HJ-NP-Z2-9]{16}$/;
+const PATH_PATTERN = /^(?:[a-z0-9_-]+\/)+$/;
 
 function decodeBase64Url(value) {
-  if (!/^[A-Za-z0-9_-]+$/.test(value)) throw new Error('Invalid encoding');
-  const base64 = value.replaceAll('-', '+').replaceAll('_', '/');
-  const padded = base64.padEnd(Math.ceil(base64.length / 4) * 4, '=');
-  return Uint8Array.from(atob(padded), char => char.charCodeAt(0));
+  if (typeof value !== 'string' || !/^[A-Za-z0-9_-]+$/.test(value)) {
+    throw new Error('Invalid route encoding');
+  }
+  const padded = value.replaceAll('-', '+').replaceAll('_', '/')
+    .padEnd(Math.ceil(value.length / 4) * 4, '=');
+  return Uint8Array.from(atob(padded), ch => ch.charCodeAt(0));
 }
 
-async function openLink() {
-  const fragment = new URLSearchParams(window.location.hash.slice(1));
-  const link = fragment.get('go');
-  if (!link) {
-    status.textContent = 'Für den Zugriff auf eine Demo wird ein vollständiger Link benötigt.';
-    return;
-  }
-  try {
-    if (link.length > 2048) throw new Error('Link too long');
-    const parts = link.split('.');
-    if (parts.length !== 4 || parts[0] !== 'v1') throw new Error('Unsupported link');
-    const nonce = decodeBase64Url(parts[1]);
-    const encrypted = decodeBase64Url(parts[2]);
-    const keyBytes = decodeBase64Url(parts[3]);
-    if (nonce.length !== 12 || encrypted.length < 17 || keyBytes.length !== 32) {
-      throw new Error('Invalid payload');
-    }
-    const key = await crypto.subtle.importKey('raw', keyBytes, {name: 'AES-GCM'}, false, ['decrypt']);
-    const decrypted = await crypto.subtle.decrypt({name: 'AES-GCM', iv: nonce}, key, encrypted);
-    const relativePath = new TextDecoder('utf-8', {fatal: true}).decode(decrypted);
-
-    // Never accept external redirect targets or paths above the Pages project root.
-    if (!relativePath || relativePath.startsWith('/') || relativePath.includes('\\') ||
-        /^[a-z][a-z0-9+.-]*:/i.test(relativePath) ||
-        relativePath.split('/').includes('..')) {
-      throw new Error('Invalid target');
-    }
-    const base = new URL('./', window.location.href);
-    const destination = new URL(relativePath, base);
-    if (destination.origin !== base.origin || !destination.pathname.startsWith(base.pathname) ||
-        destination.pathname === base.pathname) {
-      throw new Error('Target outside pages root');
-    }
-    status.textContent = 'Demo wird geöffnet …';
-    window.location.replace(destination.href);
-  } catch {
-    status.textContent = 'Der Freigabelink ist ungültig oder beschädigt.';
-  }
+export function normalizeCode(value) {
+  return String(value ?? '').toUpperCase().replace(/[\s-]/g, '');
 }
 
-void openLink();
+export async function decryptDestination(rawCode, config, subtle = crypto.subtle) {
+  const code = normalizeCode(rawCode);
+  if (!CODE_PATTERN.test(code) || config?.version !== 1 ||
+      !Array.isArray(config.routes) || config.routes.length > 20) return null;
+
+  const material = await subtle.importKey(
+    'raw', new TextEncoder().encode(code), 'PBKDF2', false, ['deriveKey']);
+
+  for (const route of config.routes) {
+    try {
+      const salt = decodeBase64Url(route.salt);
+      const iv = decodeBase64Url(route.iv);
+      const ciphertext = decodeBase64Url(route.ciphertext);
+      if (salt.length !== 16 || iv.length !== 12 || ciphertext.length <= 16) continue;
+      const key = await subtle.deriveKey(
+        {name: 'PBKDF2', salt, iterations: ITERATIONS, hash: 'SHA-256'},
+        material, {name: 'AES-GCM', length: 256}, false, ['decrypt']);
+      const plaintext = await subtle.decrypt(
+        {name: 'AES-GCM', iv}, key, ciphertext);
+      const destination = new TextDecoder('utf-8', {fatal: true}).decode(plaintext);
+      if (PATH_PATTERN.test(destination)) return destination;
+    } catch {
+      // A wrong code cannot decrypt this entry. Check the next one.
+    }
+  }
+  return null;
+}
+
+if (typeof document !== 'undefined') {
+  const form = document.getElementById('access-form');
+  const input = document.getElementById('access-code');
+  const status = document.getElementById('status');
+  const submit = form?.querySelector('button[type="submit"]');
+
+  form?.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (!input || !status || !submit) return;
+    status.textContent = 'Code wird geprüft …';
+    submit.disabled = true;
+    try {
+      const response = await fetch('./routes.json', {cache: 'no-store'});
+      if (!response.ok) throw new Error('Routes unavailable');
+      const destination = await decryptDestination(input.value, await response.json());
+      if (!destination) {
+        status.textContent = 'Code nicht erkannt.';
+        return;
+      }
+      const base = new URL('./', window.location.href);
+      const target = new URL(destination, base);
+      if (target.origin !== base.origin ||
+          !target.pathname.startsWith(base.pathname) ||
+          target.pathname === base.pathname) {
+        throw new Error('Invalid target');
+      }
+      status.textContent = 'Anwendung wird geöffnet …';
+      window.location.replace(target.href);
+    } catch {
+      status.textContent = 'Der Code konnte nicht verarbeitet werden.';
+    } finally {
+      submit.disabled = false;
+    }
+  });
+}

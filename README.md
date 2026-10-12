@@ -10,7 +10,7 @@
 | `pdf-review/` | `/pdf-review/` | `context-loom/pdf-review` → erzeugtes `dist/` |
 | `compliance-traceability/` | `/compliance-traceability/` | `context-loom/compliance-traceability/viewer/index.html` und `examples/trbs-1115-teil-1-2026.json` |
 
-GitHub Pages veröffentlicht `main` aus `/(root)`. Die Anwendungen verwenden relative URL-Pfade. Auf der Startseite werden keine Anwendungen offen verlinkt; ein Deep Link entschlüsselt den relativen Zielpfad im Browser.
+GitHub Pages veröffentlicht `main` aus `/(root)`. Die Anwendungen verwenden relative URL-Pfade. Auf der Startseite werden keine Anwendungen offen verlinkt; ein vom Nutzer eingegebener Code entschlüsselt den relativen Zielpfad im Browser.
 
 ## Verbindliche Veröffentlichungsvorgaben
 
@@ -30,35 +30,45 @@ Das Repository heißt `context-loom/public-pages` und veröffentlicht die statis
 
 Die Publishing-Konfiguration in **Settings → Pages** nutzt `main` aus `/(root)`. Die neue URL muss nach Umbenennungen auf Erreichbarkeit geprüft werden.
 
-## Verschleierte Deep Links
+## Code-Eingabe mit verschleierten Zielen
 
-Die Startseite erwartet einen verschlüsselten Deep Link des Formats `#go=v1.<IV>.<Ciphertext>.<Schlüssel>`.
-Der **relative Zielpfad** wird mit AES-256-GCM entschlüsselt; JavaScript leitet danach per `location.replace()` zur tatsächlichen URL weiter.
-Der Schlüssel wird nur im Linkfragment übermittelt und nicht in der öffentlichen Routerdatei gespeichert.
+Unter [Public Pages](https://context-loom.github.io/public-pages/) erscheint ein einzelnes **Code-Eingabefeld**.
+Jede Anwendung erhält einen eigenen zufällig erzeugten, 16-stelligen Code (Anzeige gruppiert als `XXXX-XXXX-XXXX-XXXX`).
+Der Browser leitet daraus mittels PBKDF2 (SHA-256, 180.000 Iterationen) einen AES-256-GCM-Schlüssel ab,
+versucht damit die Einträge in der öffentlichen `routes.json` zu entschlüsseln und öffnet bei einem Treffer
+den relativen Zielpfad. Die Codes sind **nicht** in der Website oder im Repository hinterlegt.
+Groß-/Kleinschreibung, Leerzeichen und Bindestriche werden bei der Eingabe ignoriert.
 
-Für einen neuen Link aus diesem Repository (Node.js ≥ 20):
-
-```bash
-node scripts/create_deep_link.mjs pdf-review/
-node scripts/create_deep_link.mjs compliance-traceability/
-```
-
-Jeder Aufruf erzeugt einen neuen, eigenständigen Link. Die erzeugten Links nicht ins öffentliche Repository committen.
-Technischer Selbsttest:
+### Neuen Code für eine Anwendung erzeugen
 
 ```bash
-node scripts/test_deep_link.mjs
+node scripts/create_access_code.mjs pdf-review/
+node scripts/create_access_code.mjs compliance-traceability/
 ```
 
-**Wichtig:** Dies ist ausschließlich **Verschleierung**, keine Authentifizierung und keine wirksame Zugriffskontrolle:
-Die statischen Zielpfade sind weiterhin direkt abrufbar und im öffentlichen GitHub-Repository erkennbar.
-Der Schlüssel ist Bestandteil des Links, und nach der Weiterleitung zeigt die Adresszeile den Klartextpfad.
-`noindex` auf den HTML-Seiten bittet Suchmaschinen um Nichtindexierung, erzwingt sie aber nicht.
-Vertrauliche Inhalte dürfen nicht veröffentlicht werden.
+Der Befehl gibt den Code **nur auf der Konsole** und den zugehörigen verschlüsselten JSON-Eintrag aus.
+Nur das `route`-Objekt wird in `routes.json` ergänzt bzw. bei Rotation ersetzt.
+Den Code ausschließlich an die vorgesehenen Empfänger übermitteln; **niemals ins öffentliche Repo committen**.
+
+Lokaler Test (Node.js >= 20):
+
+```bash
+node scripts/test_access_code.mjs
+```
+
+Der vorherige Router mit langen `#go=...`-Links und das Skript `create_deep_link.mjs` wurden ersetzt.
+Bereits erzeugte lange Links werden nicht mehr unterstützt.
+
+### Sicherheitsgrenze
+
+Dies ist **nur Zieladress-Verschleierung, keine Zugriffskontrolle**: Die Verzeichnisse und Dateien
+bleiben bei GitHub Pages und im öffentlichen GitHub-Repository ohne Code direkt abrufbar.
+Auch ein im Browser entschlüsselter Zielpfad wird nach der Weiterleitung in der Adresszeile sichtbar.
+`noindex` ist lediglich eine Bitte an Suchmaschinen. Niemals vertrauliche Inhalte veröffentlichen.
 
 ## Veröffentlichungsprüfung
 
-- Startseite ohne Fragment zeigt keine Anwendungsauswahl; gültige AES-Deep-Links leiten auf die jeweilige Anwendung weiter.
+- Startseite zeigt das Eingabefeld; ein gültiger Code leitet zur zugeordneten Anwendung weiter, ein ungültiger zeigt eine verständliche Meldung.
 - PDF-Review muss seine relativen `./vendor/`, Module und `test.pdf` laden.
 - TRBS-Viewer muss `./data/trbs-1115-teil-1-2026.json` laden und Quelltext sowie die abgeleiteten Anforderungen anzeigen.
 - Nach jedem Release stichprobenartig mindestens einen Originaltextabschnitt mit verknüpften Anforderungen öffnen.
