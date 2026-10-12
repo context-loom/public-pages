@@ -21,13 +21,15 @@ GitHub Pages veröffentlicht `main` aus `/(root)`. Alle Anwendungen verwenden re
 5. `compliance-traceability/` enthält nur den öffentlichen HTML-Viewer und den TRBS-1115-Teil-1-Datensatz (Originaltext + modellierte Anforderungen, noch ohne Anlagen-Assessments). Der HinSchG-Datensatz und alle sonstigen privaten Quelldateien bleiben ausgeschlossen.
 6. Veröffentlichungen sind durch Commit und Quellrevision nachvollziehbar zu halten; spätere Automatisierungen müssen diese Ordnergrenzen technisch durchsetzen.
 
-## GitHub Pages / Repository-Name
+## GitHub Pages
 
-Dieses Repository heißt derzeit `context-loom/pdf-review-demo`; Zielname ist `context-loom/public-pages`. Die Umbenennung erfolgt einmalig in **Settings → General → Repository name**, wenn die GitHub-Einstellungen verfügbar sind. Danach GitHub Pages unter **Settings → Pages** und die neue URL prüfen:
+Das Repository heißt `context-loom/public-pages` und veröffentlicht die statischen Inhalte über GitHub Pages:
 
-`https://context-loom.github.io/public-pages/`
+- [Startseite](https://context-loom.github.io/public-pages/)
+- [PDF Review](https://context-loom.github.io/public-pages/pdf-review/)
+- [TRBS 1115 Teil 1](https://context-loom.github.io/public-pages/compliance-traceability/)
 
-Solange nicht umbenannt wurde: `https://context-loom.github.io/pdf-review-demo/`.
+Die Publishing-Konfiguration in **Settings → Pages** nutzt `main` aus `/(root)`. Die neue URL muss nach Umbenennungen auf Erreichbarkeit geprüft werden.
 
 ## Veröffentlichungsprüfung
 
