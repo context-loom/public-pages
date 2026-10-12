@@ -6,11 +6,11 @@
 
 | Ordner | Öffentlicher Einstieg | Führende Quelle |
 | --- | --- | --- |
-| `/` | `/ ` – zentrale Startseite | Dieses Repository (`index.html`) |
+| `/` | Deep-Link-Router ohne öffentliches Anwendungsverzeichnis | Dieses Repository (`index.html`, `router.mjs`) |
 | `pdf-review/` | `/pdf-review/` | `context-loom/pdf-review` → erzeugtes `dist/` |
 | `compliance-traceability/` | `/compliance-traceability/` | `context-loom/compliance-traceability/viewer/index.html` und `examples/trbs-1115-teil-1-2026.json` |
 
-GitHub Pages veröffentlicht `main` aus `/(root)`. Alle Anwendungen verwenden relative URL-Pfade, damit auch ein Repository-Rename funktioniert.
+GitHub Pages veröffentlicht `main` aus `/(root)`. Die Anwendungen verwenden relative URL-Pfade. Auf der Startseite werden keine Anwendungen offen verlinkt; ein Deep Link entschlüsselt den relativen Zielpfad im Browser.
 
 ## Verbindliche Veröffentlichungsvorgaben
 
@@ -25,15 +25,40 @@ GitHub Pages veröffentlicht `main` aus `/(root)`. Alle Anwendungen verwenden re
 
 Das Repository heißt `context-loom/public-pages` und veröffentlicht die statischen Inhalte über GitHub Pages:
 
-- [Startseite](https://context-loom.github.io/public-pages/)
-- [PDF Review](https://context-loom.github.io/public-pages/pdf-review/)
-- [TRBS 1115 Teil 1](https://context-loom.github.io/public-pages/compliance-traceability/)
+- [Startseite / Deep-Link-Router](https://context-loom.github.io/public-pages/)
+- Die Anwendungen werden nicht öffentlich auf der Startseite verlinkt.
 
 Die Publishing-Konfiguration in **Settings → Pages** nutzt `main` aus `/(root)`. Die neue URL muss nach Umbenennungen auf Erreichbarkeit geprüft werden.
 
+## Verschleierte Deep Links
+
+Die Startseite erwartet einen verschlüsselten Deep Link des Formats `#go=v1.<IV>.<Ciphertext>.<Schlüssel>`.
+Der **relative Zielpfad** wird mit AES-256-GCM entschlüsselt; JavaScript leitet danach per `location.replace()` zur tatsächlichen URL weiter.
+Der Schlüssel wird nur im Linkfragment übermittelt und nicht in der öffentlichen Routerdatei gespeichert.
+
+Für einen neuen Link aus diesem Repository (Node.js ≥ 20):
+
+```bash
+node scripts/create_deep_link.mjs pdf-review/
+node scripts/create_deep_link.mjs compliance-traceability/
+```
+
+Jeder Aufruf erzeugt einen neuen, eigenständigen Link. Die erzeugten Links nicht ins öffentliche Repository committen.
+Technischer Selbsttest:
+
+```bash
+node scripts/test_deep_link.mjs
+```
+
+**Wichtig:** Dies ist ausschließlich **Verschleierung**, keine Authentifizierung und keine wirksame Zugriffskontrolle:
+Die statischen Zielpfade sind weiterhin direkt abrufbar und im öffentlichen GitHub-Repository erkennbar.
+Der Schlüssel ist Bestandteil des Links, und nach der Weiterleitung zeigt die Adresszeile den Klartextpfad.
+`noindex` auf den HTML-Seiten bittet Suchmaschinen um Nichtindexierung, erzwingt sie aber nicht.
+Vertrauliche Inhalte dürfen nicht veröffentlicht werden.
+
 ## Veröffentlichungsprüfung
 
-- Startseite und beide Einstiegspfade per HTTP abrufen.
+- Startseite ohne Fragment zeigt keine Anwendungsauswahl; gültige AES-Deep-Links leiten auf die jeweilige Anwendung weiter.
 - PDF-Review muss seine relativen `./vendor/`, Module und `test.pdf` laden.
 - TRBS-Viewer muss `./data/trbs-1115-teil-1-2026.json` laden und Quelltext sowie die abgeleiteten Anforderungen anzeigen.
 - Nach jedem Release stichprobenartig mindestens einen Originaltextabschnitt mit verknüpften Anforderungen öffnen.
