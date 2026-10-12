@@ -70,4 +70,9 @@ Vor Abschluss einer normalen Änderung insbesondere Repository-Zustand, Bearbeit
 
 ## Repository-spezifische Regeln
 
-Derzeit keine zusätzlichen Regeln.
+- Dieses Repository ist eine **öffentliche Ausgabefläche**, kein Entwicklungs-Repository für die einzelnen Anwendungen.
+- Root-`index.html` und `README.md` dienen der Navigation und Release-Governance; Anwendungsartefakte liegen nur in benannten Unterverzeichnissen.
+- `pdf-review/` wird ausschließlich aus dem gebauten `dist/` von `context-loom/pdf-review` aktualisiert, `compliance-traceability/` ausschließlich aus explizit freigegebenen Viewer- und JSON-Artefakten.
+- Keine Vollsynchronisation vom Quellprojekt in den Repository-Root. Die anderen Demos dürfen durch ein Deployment nicht gelöscht oder überschrieben werden.
+- Vor jedem Release auf öffentlich sichtbare personenbezogene, kundenspezifische, betriebliche oder geheime Inhalte prüfen.
+- PDFs, Schriftarten, Third-Party-Code und Lizenzen nicht verändern und Lizenztexte mit übertragen.

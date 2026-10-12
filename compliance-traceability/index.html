@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compliance Traceability · TRBS 1115 Teil 1</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#24303b;background:#f4f6f8;font-size:14px}
+*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid #1665a1;outline-offset:2px}
+header{background:#fff;border-bottom:1px solid #d7dee6;padding:13px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}h1{font-size:1.12rem;margin:0}h2{font-size:1rem;margin:0 0 12px}small,.muted{color:#667483}a{color:#175b94}header .right{margin-left:auto;display:flex;gap:10px;align-items:center}input[type=search]{border:1px solid #b8c6d3;border-radius:5px;padding:8px;min-width:220px}
+#notice{padding:9px 18px;background:#fff8df;color:#6a5015;border-bottom:1px solid #eed799}
+main{display:grid;grid-template-columns:minmax(210px,24%) minmax(330px,38%) minmax(330px,38%);height:calc(100vh - 112px);min-height:440px}
+.pane{overflow:auto;padding:16px;border-right:1px solid #d6dee5;background:#fff}.pane:last-child{border-right:0}
+#tree{list-style:none;margin:0;padding:0}#tree li{margin:0}#tree button{display:block;border:0;background:transparent;text-align:left;padding:7px 7px;width:100%;border-radius:5px;color:#303e4b}#tree button:hover{background:#eef3f8}#tree button.active{background:#dcecf9;border-left:3px solid #1766a2;font-weight:650}#tree button .count{float:right;color:#687989;font-size:.8em}
+.card{border:1px solid #d5dee6;border-radius:7px;padding:13px;margin-bottom:10px;background:white}
+.card.active{border-color:#2984b8;box-shadow:0 0 0 1px #2984b8}
+.tag{display:inline-block;border-radius:4px;border:1px solid #d2dce5;padding:2px 6px;margin:0 4px 4px 0;font-size:.79rem;background:#f6f8fa}
+.tag.draft{background:#fff2db;border-color:#f0d498}.tag.missing{background:#ffeded;border-color:#efbfc1}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6;font:inherit}
+#sourceText{border-left:3px solid #9db7cc;padding:10px 14px;background:#f8fafc;white-space:pre-wrap;line-height:1.65}
+#sourceText mark{background:#fce7a5}
+#sourceText.missing{color:#8a5b15;background:#fff9ed;border-color:#e4bc72}
+#summary{margin:12px 0}.card p{line-height:1.55;margin:8px 0}
+.toolbar{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-bottom:14px}.toolbar button{padding:6px 10px;background:white;border:1px solid #c3ceda;border-radius:5px}
+.toolbar button:disabled{opacity:.45;cursor:default}
+.sticky{position:sticky;top:-16px;padding:16px 0 8px;background:white;z-index:1}
+select{padding:8px;border:1px solid #b8c6d3;border-radius:5px;max-width:100%}
+.empty{padding:20px;border:1px dashed #bac9d6;border-radius:6px;color:#657584}
+@media(max-width:1000px){main{grid-template-columns:230px 1fr; height:auto}.pane{max-height:65vh}#requirementsPane{grid-column:1/-1;max-height:none;border-top:1px solid #d6dee5}}
+@media(max-width:600px){main{display:block}.pane{max-height:none;border-right:0;border-bottom:1px solid #d6dee5}header .right{margin-left:0;width:100%}input[type=search]{min-width:0;flex:1}}
+</style>
+</head>
+<body>
+<header><h1>Compliance Traceability · Quellenviewer</h1>
+<label for="dataset">Datensatz</label><select id="dataset"><option value="./data/trbs-1115-teil-1-2026.json">TRBS 1115 Teil 1</option></select>
+<div class="right"><label for="search">Suche</label><input id="search" type="search" placeholder="Abschnitt oder Anforderung"></div></header>
+<div id="notice" role="status">Lade Datensatz …</div>
+<main>
+<section class="pane" aria-label="Quellenhierarchie"><h2>Quellenstruktur</h2><div id="tree" role="tree"></div></section>
+<section class="pane" aria-label="Quellstelle"><div class="sticky"><h2>Quellstelle / Originaltext</h2><div class="toolbar"><button id="prev" aria-label="Vorherige Quellstelle">← Zurück</button><button id="next" aria-label="Nächste Quellstelle">Weiter →</button><button id="sourceLink">Amtliche Quelle ↗</button></div></div><div id="sourceDetails"></div></section>
+<section class="pane" id="requirementsPane" aria-label="Anforderungen"><h2>Abgeleitete Anforderungen <span id="reqCount" class="muted"></span></h2><div id="requirements"></div></section>
+</main>
+<script>
+"use strict";
+const el=id=>document.getElementById(id);
+let data=null,nodes=[],byId=new Map(),children=new Map(),direct=new Map(),selected=null,order=[],activeRequirement=null;
+function nodeId(n){return n.id}
+function text(tag,value,cls){const e=document.createElement(tag);if(cls)e.className=cls;e.textContent=value==null?"":String(value);return e}
+function badge(v,cls){const s=text("span",v,"tag "+(cls||""));return s}
+function clear(id){el(id).replaceChildren()}
+function addDetail(target,name,value){const p=document.createElement("p");p.append(text("strong",name+": "),text("span",value||"—"));target.append(p)}
+function descendantIds(id){const out=[];function walk(k){out.push(k);for(const c of children.get(k)||[])walk(c.id)}walk(id);return out}
+function getReqs(id){const ids=new Set(descendantIds(id));return (data.requirements||[]).filter(r=>(r.source_refs||[]).some(ref=>ids.has(ref)))}
+function renderTree(){
+ const q=el("search").value.trim().toLocaleLowerCase("de");
+ const match=new Set();
+ for(const n of nodes){if(!q||[n.label,n.summary,n.text,...(direct.get(n.id)||[]).flatMap(r=>[r.title,r.description,r.id])].some(v=>(v||"").toLocaleLowerCase("de").includes(q))){let x=n;while(x){match.add(x.id);x=byId.get(x.parent_id)}}}
+ const wrapper=el("tree");wrapper.replaceChildren();
+ const ul=document.createElement("ul");ul.id="tree";ul.setAttribute("role","group");wrapper.append(ul);
+ function walk(parent,host,depth=0){
+  for(const n of (children.get(parent)||[])){
+   if(!match.has(n.id))continue;
+   const li=document.createElement("li");const btn=document.createElement("button");
+   btn.style.paddingLeft=(7+Math.min(depth,8)*13)+"px";btn.setAttribute("role","treeitem");btn.setAttribute("aria-selected",String(selected===n.id));btn.className=selected===n.id?"active":"";
+   btn.append(text("span",n.label));
+   const count=getReqs(n.id).length;if(count)btn.append(text("span",count,"count"));
+   btn.addEventListener("click",()=>selectNode(n.id));
+   li.append(btn);host.append(li);
+   if((children.get(n.id)||[]).length){const sub=document.createElement("ul");sub.style.padding=0;sub.style.listStyle="none";sub.setAttribute("role","group");li.append(sub);walk(n.id,sub,depth+1)}
+  }
+ }
+ walk(null,ul);
+ if(!match.size)wrapper.append(text("p","Keine Treffer.","empty"));
+}
+function renderSource(n){
+ clear("sourceDetails");const box=el("sourceDetails");
+ box.append(text("h2",n.label));
+ box.append(badge(n.semantic_type||"unclassified"),badge(n.review?.review_status||"unreviewed",n.review?.review_status==="reviewed"?"":"draft"));
+ const source=text("div",n.text&&n.text.trim()?n.text:"Originaltext für diese Quellstelle im JSON noch nicht hinterlegt.","");
+ source.id="sourceText";if(!n.text||!n.text.trim())source.classList.add("missing");box.append(source);
+ if(n.summary){const d=document.createElement("div");d.id="summary";d.append(text("strong","Zusammenfassung (nicht Originaltext)"),text("p",n.summary));box.append(d)}
+ addDetail(box,"Semantische Prüfung",n.review?.result);
+ addDetail(box,"Prüfbegründung",n.review?.reason);
+ const loc=n.locators||[];if(loc.length)addDetail(box,"Dokumentstelle",loc.map(p=>"PDF-Seite "+p.page+(p.verified?" (verifiziert)":" (unverifiziert)")).join(", "));
+ const d=document.createElement("p");d.append(text("strong","Quell-ID: "),text("code",n.id));box.append(d);
+}
+function renderRequirements(){
+ const root=el("requirements");root.replaceChildren();
+ const reqs=getReqs(selected);el("reqCount").textContent="("+reqs.length+")";
+ if(!reqs.length){root.append(text("p","Dieser Quellstelle sind noch keine Anforderungen zugeordnet.","empty"));return}
+ for(const r of reqs){
+  const card=document.createElement("article");card.className="card"+(activeRequirement===r.id?" active":"");
+  card.append(text("h3",r.title));
+  card.append(badge(r.modality),badge(r.applicability?.status),badge(r.attributes?.review_status==="draft"?"Entwurf":r.attributes?.review_status||""));
+  card.append(text("p",r.description));
+  addDetail(card,"Bedingung",r.condition);
+  addDetail(card,"Anwendbarkeit",r.applicability?.reason);
+  addDetail(card,"Ableitungsbegründung",r.derived_from);
+  if(r.notes)addDetail(card,"Hinweis",r.notes);
+  const sources=(r.source_refs||[]).map(id=>byId.get(id)).filter(Boolean);
+  const links=document.createElement("div");
+  links.append(text("strong","Quellbezug: "));
+  for(const src of sources){const b=document.createElement("button");b.textContent=src.label;b.style.margin="3px";b.addEventListener("click",()=>{activeRequirement=r.id;selectNode(src.id);});links.append(b)}
+  if(r.attributes?.source_locator)links.append(badge("Locator: "+r.attributes.source_locator));
+  card.append(links);
+  const implementations=(data.mappings||[]).filter(m=>m.requirement_id===r.id);if(implementations.length)addDetail(card,"Umsetzungen",implementations.map(m=>m.implementation_id+" ("+m.coverage+")").join("; "));
+  root.append(card);
+ }
+}
+function selectNode(id){if(!byId.has(id))return;selected=id;renderTree();renderSource(byId.get(id));renderRequirements();const i=order.findIndex(n=>n.id===id);el("prev").disabled=i<=0;el("next").disabled=i<0||i===order.length-1;history.replaceState(null,"","#"+encodeURIComponent(id))}
+function navigate(delta){const i=order.findIndex(n=>n.id===selected);if(i+delta>=0&&i+delta<order.length)selectNode(order[i+delta].id)}
+async function load(){
+ const file=el("dataset").value;el("notice").textContent="Lade "+file+" …";
+ try{
+  const response=await fetch(file,{cache:"no-store"});if(!response.ok)throw Error("HTTP "+response.status);
+  const incoming=await response.json();if(!Array.isArray(incoming.source_nodes)||!Array.isArray(incoming.requirements))throw Error("Kein gültiger Compliance-Datensatz");
+  data=incoming;nodes=data.source_nodes;byId=new Map(nodes.map(n=>[n.id,n]));children=new Map();direct=new Map();
+  for(const n of nodes){const key=byId.has(n.parent_id)?n.parent_id:null;if(!children.has(key))children.set(key,[]);children.get(key).push(n)}
+  for(const arr of children.values())arr.sort((a,b)=>(a.order||0)-(b.order||0));
+  for(const r of data.requirements)for(const s of r.source_refs||[]){if(!direct.has(s))direct.set(s,[]);direct.get(s).push(r)}
+  order=[];function walk(parent){for(const n of children.get(parent)||[]){order.push(n);walk(n.id)}}walk(null);
+  const withText=nodes.filter(n=>typeof n.text==="string"&&n.text.trim()).length;
+  const draft=data.requirements.filter(r=>r.attributes?.review_status==="draft").length;
+  el("notice").textContent=(data.scope?.title||"Datensatz")+" · "+nodes.length+" Quellstellen · "+data.requirements.length+" Anforderungen · "+withText+" Originaltexte hinterlegt"+(draft?" · "+draft+" Entwürfe":"");
+  const hash=decodeURIComponent(location.hash.slice(1));selectNode(byId.has(hash)?hash:(order[0]?.id));
+ }catch(err){data=null;clear("tree");clear("sourceDetails");clear("requirements");el("notice").textContent="Datensatz konnte nicht geladen werden: "+err.message+". Bitte über einen lokalen HTTP-Server öffnen (nicht file://)."}
+}
+el("dataset").addEventListener("change",()=>{history.replaceState(null,"",location.pathname);load()});
+el("search").addEventListener("input",renderTree);
+el("prev").addEventListener("click",()=>navigate(-1));el("next").addEventListener("click",()=>navigate(1));
+el("sourceLink").addEventListener("click",()=>{const url=data?.sources?.[0]?.official_uri;if(url)window.open(url,"_blank","noopener,noreferrer")});
+window.addEventListener("hashchange",()=>{const id=decodeURIComponent(location.hash.slice(1));if(byId.has(id))selectNode(id)});
+load();
+</script>
+</body>
+</html>
