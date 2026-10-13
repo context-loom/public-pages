@@ -6,11 +6,11 @@
 
 | Ordner | Öffentlicher Einstieg | Führende Quelle |
 | --- | --- | --- |
-| `/` | Deep-Link-Router ohne öffentliches Anwendungsverzeichnis | Dieses Repository (`index.html`, `router.mjs`) |
+| `/` | Übersicht mit gesperrten Links bis zur Entschlüsselung | Dieses Repository (`index.html`, `router.mjs`, `routes.json`) |
 | `pdf-review/` | `/pdf-review/` | `context-loom/pdf-review` → erzeugtes `dist/` |
 | `compliance-traceability/` | `/compliance-traceability/` | `context-loom/compliance-traceability/viewer/index.html` und `examples/trbs-1115-teil-1-2026.json` |
 
-GitHub Pages veröffentlicht `main` aus `/(root)`. Die Anwendungen verwenden relative URL-Pfade. Auf der Startseite werden keine Anwendungen offen verlinkt; ein vom Nutzer eingegebener Code entschlüsselt den relativen Zielpfad im Browser.
+GitHub Pages veröffentlicht `main` aus `/(root)`. Die Anwendungen verwenden relative URL-Pfade. Die Anwendungen sind auf der Startseite benannt, aber ihre `href`-Ziele werden erst nach Eingabe des gemeinsamen Codes oder Aufruf mit `#secret=...` eingesetzt.
 
 ## Verbindliche Veröffentlichungsvorgaben
 
@@ -25,50 +25,60 @@ GitHub Pages veröffentlicht `main` aus `/(root)`. Die Anwendungen verwenden rel
 
 Das Repository heißt `context-loom/public-pages` und veröffentlicht die statischen Inhalte über GitHub Pages:
 
-- [Startseite / Deep-Link-Router](https://context-loom.github.io/public-pages/)
-- Die Anwendungen werden nicht öffentlich auf der Startseite verlinkt.
+- [Startseite](https://context-loom.github.io/public-pages/) (ohne Code: Linkziele gesperrt).
+- Der öffentliche [`INDEX.md`](https://github.com/context-loom/.github/blob/main/INDEX.md) enthält **keinen Schlüssel**. Einstieg mit `#secret=...` nur aus den privaten Quell-Repository-READMEs.
 
 Die Publishing-Konfiguration in **Settings → Pages** nutzt `main` aus `/(root)`. Die neue URL muss nach Umbenennungen auf Erreichbarkeit geprüft werden.
 
-## Code-Eingabe mit verschleierten Zielen
+## Gemeinsamer Code für alle Projekte
 
-Unter [Public Pages](https://context-loom.github.io/public-pages/) erscheint ein einzelnes **Code-Eingabefeld**.
-Jede Anwendung erhält einen eigenen zufällig erzeugten, 16-stelligen Code (Anzeige gruppiert als `XXXX-XXXX-XXXX-XXXX`).
-Der Browser leitet daraus mittels PBKDF2 (SHA-256, 180.000 Iterationen) einen AES-256-GCM-Schlüssel ab,
-versucht damit die Einträge in der öffentlichen `routes.json` zu entschlüsseln und öffnet bei einem Treffer
-den relativen Zielpfad. Die Codes sind **nicht** in der Website oder im Repository hinterlegt.
-Groß-/Kleinschreibung, Leerzeichen und Bindestriche werden bei der Eingabe ignoriert.
+Die Startseite zeigt die Projektnamen PDF Review und TRBS 1115 Teil 1, jedoch zunächst **keine `href`-Attribute**.
+Ein einheitlicher 16-stelliger Code kann auf zwei Wegen geliefert werden:
 
-### Neuen Code für eine Anwendung erzeugen
+- manuell über das Eingabefeld (anschließend wird `#secret=...` in die URL geschrieben);
+- unmittelbar in der Start-URL `https://context-loom.github.io/public-pages/#secret=<CODE>`.
 
-```bash
-node scripts/create_access_code.mjs pdf-review/
-node scripts/create_access_code.mjs compliance-traceability/
-```
+JavaScript leitet per **PBKDF2-HMAC-SHA-256 (180.000 Iterationen)** aus dem Code einen Schlüssel ab.
+Mit **AES-256-GCM** wird der gesamte Zielkatalog in `routes.json` entschlüsselt und je Projekt das `href` gesetzt.
+Es erfolgt **keine automatische Weiterleitung** mehr. Ein Klick auf einen freigeschalteten Link öffnet das
+jeweilige Projekt; die Ziel-URLs bleiben dabei am gleichen Pages-Ursprung.
+Diese Lösung ist symmetrische Verschlüsselung und **kein PGP**, das zusätzlich eine asymmetrische Schlüsselverwaltung erfordern würde.
 
-Der Befehl gibt den Code **nur auf der Konsole** und den zugehörigen verschlüsselten JSON-Eintrag aus.
-Nur das `route`-Objekt wird in `routes.json` ergänzt bzw. bei Rotation ersetzt.
-Den Code ausschließlich an die vorgesehenen Empfänger übermitteln; **niemals ins öffentliche Repo committen**.
+### Konfiguration und Rotation
 
-Lokaler Test (Node.js >= 20):
+Mit Node.js >= 20 einen neuen gemeinsamen Code und verschlüsselten Index erzeugen:
 
 ```bash
-node scripts/test_access_code.mjs
+node scripts/create_shared_index.mjs \
+  pdf-review=pdf-review/ \
+  trbs-1115=compliance-traceability/
 ```
 
-Der vorherige Router mit langen `#go=...`-Links und das Skript `create_deep_link.mjs` wurden ersetzt.
-Bereits erzeugte lange Links werden nicht mehr unterstützt.
+Die Ausgabe enthält `secret` sowie `manifest`. Ausschließlich das `manifest`-Objekt wird in `routes.json` gespeichert.
+Bei einem neuen Projekt oder einer Code-Rotation **alle Projekte** im Generator-Aufruf aufnehmen.
+Für dieselbe Code-Kennung kann `PUBLIC_PAGES_SECRET` gesetzt werden; die verschlüsselte Manifestdatei wird trotzdem neu erzeugt.
+Bei Code-Rotation die geheimhaltungsbedürftigen Einstiegslinks in den privaten `README.md` von `context-loom/pdf-review` und `context-loom/compliance-traceability` aktualisieren. Den Code niemals in öffentlichen Index, README oder Quellcode übernehmen.
 
-### Sicherheitsgrenze
+Prüfung:
 
-Dies ist **nur Zieladress-Verschleierung, keine Zugriffskontrolle**: Die Verzeichnisse und Dateien
-bleiben bei GitHub Pages und im öffentlichen GitHub-Repository ohne Code direkt abrufbar.
-Auch ein im Browser entschlüsselter Zielpfad wird nach der Weiterleitung in der Adresszeile sichtbar.
-`noindex` ist lediglich eine Bitte an Suchmaschinen. Niemals vertrauliche Inhalte veröffentlichen.
+```bash
+node scripts/test_shared_index.mjs
+```
+
+Ein optional gesetztes `PUBLIC_PAGES_SECRET` erlaubt dem Test zusätzlich die Entschlüsselung des veröffentlichten Manifests.
+Die bisherigen einzelnen Anwendungscodes und `create_access_code.mjs` sind nicht mehr gültig.
+
+### Indexierung und Sicherheitsgrenze
+
+**Kein Zugangsschutz:** Alle statischen Dateien und Repositoryinhalte bleiben direkt öffentlich erreichbar.
+Der gemeinsame Code liegt ausschließlich in den READMEs der **privaten Quell-Repositories**. Er steht nicht im öffentlichen Index, im öffentlichen Repository oder im Client-JavaScript. Trotzdem ist dies keine Zugriffskontrolle, denn die öffentlichen Zielpfade bleiben direkt erreichbar.
+`noindex,nofollow` auf den HTML-Seiten erschwert regelkonformen Suchmaschinen die Indexierung, verhindert sie
+aber nicht zuverlässig und betrifft nicht automatisch die öffentliche GitHub-Repository-Ansicht.
+**Keine vertraulichen Daten auf dieser Plattform veröffentlichen.**
 
 ## Veröffentlichungsprüfung
 
-- Startseite zeigt das Eingabefeld; ein gültiger Code leitet zur zugeordneten Anwendung weiter, ein ungültiger zeigt eine verständliche Meldung.
+- Startseite zeigt die Projektübersicht ohne `href`; gültiger Code (Eingabe oder `#secret`) aktiviert beide Links, ungültiger Code belässt sie gesperrt.
 - PDF-Review muss seine relativen `./vendor/`, Module und `test.pdf` laden.
 - TRBS-Viewer muss `./data/trbs-1115-teil-1-2026.json` laden und Quelltext sowie die abgeleiteten Anforderungen anzeigen.
 - Nach jedem Release stichprobenartig mindestens einen Originaltextabschnitt mit verknüpften Anforderungen öffnen.

@@ -1,15 +1,6 @@
 {
-  "version": 1,
-  "routes": [
-    {
-      "salt": "Z5kQeWqx-CY4BuswN3918A",
-      "iv": "tEpp6svVotautgbA",
-      "ciphertext": "ElQQM6I6M2yBEoSHwItS9aUpUqaOTF0yucdL"
-    },
-    {
-      "salt": "M9vIYxz3sDYpvDqJHEfCvA",
-      "iv": "65perLFOY8SOqYOr",
-      "ciphertext": "7OtqFf_1LvIv9KTu0QbHUIWPm8xKBlGcUtDQMPCBqpagjhT-iKY78Q"
-    }
-  ]
+  "version": 2,
+  "salt": "XgTS3LhkDwPFqwCLKCzPSQ",
+  "iv": "VEsR4w9Puk4Lp2Df",
+  "ciphertext": "_5t_Hv1V4WsgijU4y7Nj3mQ0M9dpMO77556-F4ExuM18P1biAFilTw4Aw-GoySAe42GUoMIbzpzav2NoyoWw34kJ49pVFq-sJE7Kk87GsSt7tuo"
 }
