@@ -71,9 +71,9 @@ Vor Abschluss einer normalen Änderung insbesondere Repository-Zustand, Bearbeit
 ## Repository-spezifische Regeln
 
 - Dieses Repository ist eine **öffentliche Ausgabefläche**, kein Entwicklungs-Repository für die einzelnen Anwendungen.
-- Root-`index.html` mit `router.mjs` zeigt eine Projektübersicht. Erst ein gemeinsamer Code (Eingabe oder `#secret=...`) entschlüsselt die `href`-Ziele aus `routes.json`. `README.md` dokumentiert die Veröffentlichung. Anwendungsartefakte liegen nur in benannten Unterverzeichnissen.
+- Root-`index.html` ist die öffentliche Startseite mit direkten Links; `README.md` dokumentiert die Veröffentlichung. Anwendungsartefakte liegen nur in benannten Unterverzeichnissen.
 - `pdf-review/` wird ausschließlich aus dem gebauten `dist/` von `context-loom/pdf-review` aktualisiert, `compliance-traceability/` ausschließlich aus explizit freigegebenen Viewer- und JSON-Artefakten.
 - Keine Vollsynchronisation vom Quellprojekt in den Repository-Root. Die anderen Demos dürfen durch ein Deployment nicht gelöscht oder überschrieben werden.
 - Vor jedem Release auf öffentlich sichtbare personenbezogene, kundenspezifische, betriebliche oder geheime Inhalte prüfen.
 - PDFs, Schriftarten, Third-Party-Code und Lizenzen nicht verändern und Lizenztexte mit übertragen.
-- Gemeinsame Codes und Manifeste ausschließlich mit `scripts/create_shared_index.mjs` erzeugen; nur das verschlüsselte Manifest in `routes.json` ablegen. Links mit `#secret=` ausschließlich in den privaten READMEs der Quell-Repositories pflegen; **nie** im öffentlichen `context-loom/.github/INDEX.md`. Bei Rotationen beide privaten README-Links aktualisieren. `node scripts/test_shared_index.mjs` nach Änderungen ausführen. Dies ist keine Zugriffskontrolle.
+- Keine verschlüsselten Deep Links, Codes oder Token-Router für öffentliche GitHub Pages einsetzen. Alle veröffentlichten Inhalte vor dem Deployment auf Öffentlichkeitsfähigkeit prüfen.

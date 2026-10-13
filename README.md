@@ -6,11 +6,11 @@
 
 | Ordner | Öffentlicher Einstieg | Führende Quelle |
 | --- | --- | --- |
-| `/` | Übersicht mit gesperrten Links bis zur Entschlüsselung | Dieses Repository (`index.html`, `router.mjs`, `routes.json`) |
+| `/` | Öffentliche Startseite mit Projektlinks | Dieses Repository (`index.html`) |
 | `pdf-review/` | `/pdf-review/` | `context-loom/pdf-review` → erzeugtes `dist/` |
 | `compliance-traceability/` | `/compliance-traceability/` | `context-loom/compliance-traceability/viewer/index.html` und `examples/trbs-1115-teil-1-2026.json` |
 
-GitHub Pages veröffentlicht `main` aus `/(root)`. Die Anwendungen verwenden relative URL-Pfade. Die Anwendungen sind auf der Startseite benannt, aber ihre `href`-Ziele werden erst nach Eingabe des gemeinsamen Codes oder Aufruf mit `#secret=...` eingesetzt.
+GitHub Pages veröffentlicht `main` aus `/(root)`. Die Startseite verlinkt die veröffentlichten statischen Anwendungen direkt. Die Anwendungen verwenden relative URL-Pfade.
 
 ## Verbindliche Veröffentlichungsvorgaben
 
@@ -23,62 +23,19 @@ GitHub Pages veröffentlicht `main` aus `/(root)`. Die Anwendungen verwenden rel
 
 ## GitHub Pages
 
-Das Repository heißt `context-loom/public-pages` und veröffentlicht die statischen Inhalte über GitHub Pages:
+Das Repository `context-loom/public-pages` veröffentlicht ausschließlich ausdrücklich für die Öffentlichkeit bestimmte, statische Artefakte. Einstieg und direkte Links:
 
-- [Startseite](https://context-loom.github.io/public-pages/) (ohne Code: Linkziele gesperrt).
-- Der öffentliche [`INDEX.md`](https://github.com/context-loom/.github/blob/main/INDEX.md) enthält **keinen Schlüssel**. Einstieg mit `#secret=...` nur aus den privaten Quell-Repository-READMEs.
+- [Startseite](https://context-loom.github.io/public-pages/)
+- [PDF Review](https://context-loom.github.io/public-pages/pdf-review/)
+- [TRBS 1115 Teil 1](https://context-loom.github.io/public-pages/compliance-traceability/)
 
-Die Publishing-Konfiguration in **Settings → Pages** nutzt `main` aus `/(root)`. Die neue URL muss nach Umbenennungen auf Erreichbarkeit geprüft werden.
+Die Publishing-Konfiguration unter **Settings → Pages** verwendet `main` aus `/(root)`.
 
-## Gemeinsamer Code für alle Projekte
-
-Die Startseite zeigt die Projektnamen PDF Review und TRBS 1115 Teil 1, jedoch zunächst **keine `href`-Attribute**.
-Ein einheitlicher 16-stelliger Code kann auf zwei Wegen geliefert werden:
-
-- manuell über das Eingabefeld (anschließend wird `#secret=...` in die URL geschrieben);
-- unmittelbar in der Start-URL `https://context-loom.github.io/public-pages/#secret=<CODE>`.
-
-JavaScript leitet per **PBKDF2-HMAC-SHA-256 (180.000 Iterationen)** aus dem Code einen Schlüssel ab.
-Mit **AES-256-GCM** wird der gesamte Zielkatalog in `routes.json` entschlüsselt und je Projekt das `href` gesetzt.
-Es erfolgt **keine automatische Weiterleitung** mehr. Ein Klick auf einen freigeschalteten Link öffnet das
-jeweilige Projekt; die Ziel-URLs bleiben dabei am gleichen Pages-Ursprung.
-Diese Lösung ist symmetrische Verschlüsselung und **kein PGP**, das zusätzlich eine asymmetrische Schlüsselverwaltung erfordern würde.
-
-### Konfiguration und Rotation
-
-Mit Node.js >= 20 einen neuen gemeinsamen Code und verschlüsselten Index erzeugen:
-
-```bash
-node scripts/create_shared_index.mjs \
-  pdf-review=pdf-review/ \
-  trbs-1115=compliance-traceability/
-```
-
-Die Ausgabe enthält `secret` sowie `manifest`. Ausschließlich das `manifest`-Objekt wird in `routes.json` gespeichert.
-Bei einem neuen Projekt oder einer Code-Rotation **alle Projekte** im Generator-Aufruf aufnehmen.
-Für dieselbe Code-Kennung kann `PUBLIC_PAGES_SECRET` gesetzt werden; die verschlüsselte Manifestdatei wird trotzdem neu erzeugt.
-Bei Code-Rotation die geheimhaltungsbedürftigen Einstiegslinks in den privaten `README.md` von `context-loom/pdf-review` und `context-loom/compliance-traceability` aktualisieren. Den Code niemals in öffentlichen Index, README oder Quellcode übernehmen.
-
-Prüfung:
-
-```bash
-node scripts/test_shared_index.mjs
-```
-
-Ein optional gesetztes `PUBLIC_PAGES_SECRET` erlaubt dem Test zusätzlich die Entschlüsselung des veröffentlichten Manifests.
-Die bisherigen einzelnen Anwendungscodes und `create_access_code.mjs` sind nicht mehr gültig.
-
-### Indexierung und Sicherheitsgrenze
-
-**Kein Zugangsschutz:** Alle statischen Dateien und Repositoryinhalte bleiben direkt öffentlich erreichbar.
-Der gemeinsame Code liegt ausschließlich in den READMEs der **privaten Quell-Repositories**. Er steht nicht im öffentlichen Index, im öffentlichen Repository oder im Client-JavaScript. Trotzdem ist dies keine Zugriffskontrolle, denn die öffentlichen Zielpfade bleiben direkt erreichbar.
-`noindex,nofollow` auf den HTML-Seiten erschwert regelkonformen Suchmaschinen die Indexierung, verhindert sie
-aber nicht zuverlässig und betrifft nicht automatisch die öffentliche GitHub-Repository-Ansicht.
-**Keine vertraulichen Daten auf dieser Plattform veröffentlichen.**
+Es gibt keine Linkverschleierung, Eingabecodes oder clientseitige Zugriffskontrolle. Die Anwendungen sind öffentlich und direkt erreichbar. Vertrauliche Daten gehören nicht in dieses Repository.
 
 ## Veröffentlichungsprüfung
 
-- Startseite zeigt die Projektübersicht ohne `href`; gültiger Code (Eingabe oder `#secret`) aktiviert beide Links, ungültiger Code belässt sie gesperrt.
+- Startseite verlinkt PDF Review und den TRBS-Viewer direkt; beide Aufrufe funktionieren ohne JavaScript-Router oder Eingabecode.
 - PDF-Review muss seine relativen `./vendor/`, Module und `test.pdf` laden.
 - TRBS-Viewer muss `./data/trbs-1115-teil-1-2026.json` laden und Quelltext sowie die abgeleiteten Anforderungen anzeigen.
 - Nach jedem Release stichprobenartig mindestens einen Originaltextabschnitt mit verknüpften Anforderungen öffnen.
