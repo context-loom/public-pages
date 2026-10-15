@@ -1,6 +1,6 @@
 # Agent Instructions
 
-Der folgende Block wird aus `context-loom/.github/AGENTS.md` synchronisiert.
+Der folgende Block wird aus `context-loom/.github-private/AGENTS.md` synchronisiert.
 Organisationsweite Regeln dort ändern, nicht in dieser Kopie.
 
 <!-- context-loom:shared:start -->
@@ -16,7 +16,7 @@ Organisationsweite Regeln dort ändern, nicht in dieser Kopie.
 
 Die zentrale Navigation liegt in:
 
-`context-loom/.github/INDEX.md`
+`context-loom/.github-private/INDEX.md`
 
 Prüfe bei Arbeiten in Context Loom **vor Abschluss jeder strukturellen Änderung**, ob der Index angepasst werden muss.
 
@@ -42,7 +42,7 @@ Der Index soll **vollständig genug zum Entdecken, aber knapp genug als Inhaltsv
 
 ### Änderungen an Agentenregeln
 
-- Organisationsweite Regeln werden zuerst in `context-loom/.github/AGENTS.md` geändert.
+- Organisationsweite Regeln werden zuerst in `context-loom/.github-private/AGENTS.md` geändert.
 - Der Shared-Block zwischen den Markern `context-loom:shared:start` und `context-loom:shared:end` wird anschließend in die Root-`AGENTS.md` der Context-Loom-Repositories synchronisiert.
 - Repo-spezifische Regeln stehen **außerhalb** dieses verwalteten Blocks und dürfen bei der Synchronisierung nicht überschrieben werden.
 - Wenn eine neue Regel nur ein Repository betrifft, gehört sie ausschließlich in dessen lokale `AGENTS.md`.
@@ -57,7 +57,7 @@ Bei einem ausdrücklich beauftragten **Housekeeping Review** oder **Housekeeping
 
 `.context-loom/housekeeping-audit.md`
 
-Die kanonischen Quellen dieser Dateien liegen in `context-loom/.github/`. Die lokalen Kopien werden synchronisiert und nicht repo-spezifisch verändert.
+Die kanonischen Quellen dieser Dateien liegen in `context-loom/.github-private/`. Die lokalen Kopien werden synchronisiert und nicht repo-spezifisch verändert.
 
 Vor Abschluss einer normalen Änderung insbesondere Repository-Zustand, Bearbeitungsreste, obsolete oder doppelte Inhalte, Tests/Build, Dokumentation, Navigation und den vollständigen eigenen Diff prüfen.
 
