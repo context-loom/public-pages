@@ -7,6 +7,7 @@
 | Ordner | Öffentlicher Einstieg | Führende Quelle |
 | --- | --- | --- |
 | `/` | Öffentliche Startseite mit Projektlinks | Dieses Repository (`index.html`) |
+| `informationsmodell/` | `/informationsmodell/` | `context-loom/pdf-review/docs/informationsmodell/README.md` → `scripts/build-information-model.mjs` |
 | `pdf-review/` | `/pdf-review/` | `context-loom/pdf-review` → erzeugtes `dist/` |
 | `compliance-traceability/` | `/compliance-traceability/` | `context-loom/compliance-traceability/viewer/index.html` und `examples/trbs-1115-teil-1-2026.json` |
 
@@ -41,3 +42,18 @@ Es gibt keine Linkverschleierung, Eingabecodes oder clientseitige Zugriffskontro
 - Nach jedem Release stichprobenartig mindestens einen Originaltextabschnitt mit verknüpften Anforderungen öffnen.
 
 PDF.js und gebündelte Fonts behalten ihre jeweiligen Lizenzen in `pdf-review/vendor/`.
+
+## Fachliches Informationsmodell
+
+[Informationsmodell öffnen](https://context-loom.github.io/public-pages/informationsmodell/).
+Führende Quelle: `context-loom/pdf-review`, Branch `refactor/vue-frontend`,
+`docs/informationsmodell/README.md`. Generator: `scripts/build-information-model.mjs`.
+Veröffentlicht aus Quellcommit `f7c97820f4fd20666b652878c64688708752e944`.
+Reproduktion im Quellrepository: `node scripts/build-information-model.mjs`;
+nur `dist-information-model/index.html` nach `informationsmodell/index.html` übernehmen.
+
+Veröffentlicht wird eine konzeptionelle Arbeitsfassung mit generischen Beispielen,
+keine realen GOM-Messdaten, Kundenunterlagen oder Zugangsdaten.
+HTML/SVG/CSS und Tabellenfilter sind eigenständig; keine externen Skripte oder Fonts.
+Syntax und Navigationsanker wurden geprüft. Ein visueller Browserlauf war in der
+Erstellungsumgebung mangels installiertem Chromium nicht ausführbar.
