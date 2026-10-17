@@ -48,7 +48,7 @@ PDF.js und gebündelte Fonts behalten ihre jeweiligen Lizenzen in `pdf-review/ve
 [Informationsmodell öffnen](https://context-loom.github.io/public-pages/informationsmodell/).
 Führende Quelle: `context-loom/pdf-review`, Branch `refactor/vue-frontend`,
 `docs/informationsmodell/README.md`. Generator: `scripts/build-information-model.mjs`.
-Veröffentlicht aus Quellcommit `f7c97820f4fd20666b652878c64688708752e944`.
+Veröffentlicht aus Quellcommit `23e8d4b3759b53a2e86c19e01efba902b04ce882`.
 Reproduktion im Quellrepository: `node scripts/build-information-model.mjs`;
 nur `dist-information-model/index.html` nach `informationsmodell/index.html` übernehmen.
 
