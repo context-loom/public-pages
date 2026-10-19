@@ -48,12 +48,14 @@ PDF.js und gebündelte Fonts behalten ihre jeweiligen Lizenzen in `pdf-review/ve
 [Informationsmodell öffnen](https://context-loom.github.io/public-pages/informationsmodell/).
 Führende Quelle: `context-loom/pdf-review`, Branch `refactor/vue-frontend`,
 `docs/informationsmodell/README.md`. Generator: `scripts/build-information-model.mjs`.
-Veröffentlicht aus Quellcommit `23e8d4b3759b53a2e86c19e01efba902b04ce882`.
+Veröffentlicht aus Quellcommit `0ede8dc99b770c72eb42d981a2e365c42e10851d`.
 Reproduktion im Quellrepository: `node scripts/build-information-model.mjs`;
 nur `dist-information-model/index.html` nach `informationsmodell/index.html` übernehmen.
 
 Veröffentlicht wird eine konzeptionelle Arbeitsfassung mit generischen Beispielen,
 keine realen GOM-Messdaten, Kundenunterlagen oder Zugangsdaten.
 HTML/SVG/CSS und Tabellenfilter sind eigenständig; keine externen Skripte oder Fonts.
-Syntax und Navigationsanker wurden geprüft. Ein visueller Browserlauf war in der
-Erstellungsumgebung mangels installiertem Chromium nicht ausführbar.
+Arbeitsfassung 0.2.0 ergänzt vier fachliche Teilansichten mit erläuterten Kardinalitäten.
+Syntax, Navigationsanker und eindeutige SVG-Referenzen wurden geprüft; die vier
+neuen Diagramme wurden als SVG gerendert und visuell geprüft. Ein vollständiger
+Browserlauf war mangels installiertem Chromium nicht ausführbar.
