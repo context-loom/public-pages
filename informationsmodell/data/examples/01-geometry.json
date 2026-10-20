@@ -1,0 +1,127 @@
+{
+  "$schema": "../information-model.schema.json",
+  "schemaVersion": "0.3.0",
+  "profiles": [
+    "geometry-capture"
+  ],
+  "product": {
+    "definitions": [
+      {
+        "id": "housing-c",
+        "kind": "part",
+        "revision": "C",
+        "label": "Gehäuse"
+      }
+    ]
+  },
+  "geometry": {
+    "regions": [
+      {
+        "id": "connection-left",
+        "label": "Anschlussbereich links"
+      }
+    ],
+    "features": [
+      {
+        "id": "b17",
+        "kind": "hole",
+        "holeType": "blind",
+        "label": "Sackloch B17"
+      },
+      {
+        "id": "b18",
+        "kind": "hole",
+        "label": "Bohrung B18"
+      }
+    ],
+    "elements": [
+      {
+        "id": "b17-cylinder",
+        "kind": "cylinder",
+        "basis": "nominal",
+        "label": "Mantelfläche B17"
+      },
+      {
+        "id": "b17-axis",
+        "kind": "axis",
+        "basis": "nominal",
+        "label": "Achse B17"
+      },
+      {
+        "id": "b17-mouth",
+        "kind": "plane",
+        "basis": "nominal",
+        "label": "Eintrittsebene B17"
+      },
+      {
+        "id": "b17-depth-end",
+        "kind": "plane",
+        "basis": "nominal",
+        "label": "Hilfsebene am Ende des nutzbaren Zylinderabschnitts"
+      },
+      {
+        "id": "b18-axis",
+        "kind": "axis",
+        "basis": "nominal",
+        "label": "Achse B18"
+      }
+    ],
+    "relations": [
+      {
+        "id": "r-region",
+        "kind": "part-of",
+        "from": "connection-left",
+        "to": "housing-c"
+      },
+      {
+        "id": "r-b17",
+        "kind": "part-of",
+        "from": "b17",
+        "to": "housing-c"
+      },
+      {
+        "id": "r-b18",
+        "kind": "part-of",
+        "from": "b18",
+        "to": "housing-c"
+      },
+      {
+        "id": "r-cylinder",
+        "kind": "part-of",
+        "from": "b17-cylinder",
+        "to": "b17"
+      },
+      {
+        "id": "r-mouth",
+        "kind": "part-of",
+        "from": "b17-mouth",
+        "to": "b17"
+      },
+      {
+        "id": "r-end",
+        "kind": "derived-from",
+        "from": "b17-depth-end",
+        "to": "b17-cylinder"
+      },
+      {
+        "id": "r-axis",
+        "kind": "derived-from",
+        "from": "b17-axis",
+        "to": "b17-cylinder"
+      },
+      {
+        "id": "r-axis18",
+        "kind": "derived-from",
+        "from": "b18-axis",
+        "to": "b18"
+      },
+      {
+        "id": "r-location",
+        "kind": "located-in",
+        "from": "b17",
+        "to": "connection-left"
+      }
+    ]
+  }
+}
+
