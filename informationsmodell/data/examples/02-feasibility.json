@@ -1,0 +1,294 @@
+{
+  "$schema": "../information-model.schema.json",
+  "schemaVersion": "0.3.0",
+  "profiles": [
+    "feasibility-review"
+  ],
+  "product": {
+    "definitions": [
+      {
+        "id": "housing-c",
+        "kind": "part",
+        "revision": "C",
+        "label": "Gehäuse"
+      }
+    ]
+  },
+  "geometry": {
+    "regions": [
+      {
+        "id": "connection-left",
+        "label": "Anschlussbereich links"
+      }
+    ],
+    "features": [
+      {
+        "id": "b17",
+        "kind": "hole",
+        "holeType": "blind",
+        "label": "Sackloch B17"
+      },
+      {
+        "id": "b18",
+        "kind": "hole",
+        "label": "Bohrung B18"
+      }
+    ],
+    "elements": [
+      {
+        "id": "b17-cylinder",
+        "kind": "cylinder",
+        "basis": "nominal",
+        "label": "Mantelfläche B17"
+      },
+      {
+        "id": "b17-axis",
+        "kind": "axis",
+        "basis": "nominal",
+        "label": "Achse B17"
+      },
+      {
+        "id": "b17-mouth",
+        "kind": "plane",
+        "basis": "nominal",
+        "label": "Eintrittsebene B17"
+      },
+      {
+        "id": "b17-depth-end",
+        "kind": "plane",
+        "basis": "nominal",
+        "label": "Hilfsebene am Ende des nutzbaren Zylinderabschnitts"
+      },
+      {
+        "id": "b18-axis",
+        "kind": "axis",
+        "basis": "nominal",
+        "label": "Achse B18"
+      }
+    ],
+    "relations": [
+      {
+        "id": "r-region",
+        "kind": "part-of",
+        "from": "connection-left",
+        "to": "housing-c"
+      },
+      {
+        "id": "r-b17",
+        "kind": "part-of",
+        "from": "b17",
+        "to": "housing-c"
+      },
+      {
+        "id": "r-b18",
+        "kind": "part-of",
+        "from": "b18",
+        "to": "housing-c"
+      },
+      {
+        "id": "r-cylinder",
+        "kind": "part-of",
+        "from": "b17-cylinder",
+        "to": "b17"
+      },
+      {
+        "id": "r-mouth",
+        "kind": "part-of",
+        "from": "b17-mouth",
+        "to": "b17"
+      },
+      {
+        "id": "r-end",
+        "kind": "derived-from",
+        "from": "b17-depth-end",
+        "to": "b17-cylinder"
+      },
+      {
+        "id": "r-axis",
+        "kind": "derived-from",
+        "from": "b17-axis",
+        "to": "b17-cylinder"
+      },
+      {
+        "id": "r-axis18",
+        "kind": "derived-from",
+        "from": "b18-axis",
+        "to": "b18"
+      },
+      {
+        "id": "r-location",
+        "kind": "located-in",
+        "from": "b17",
+        "to": "connection-left"
+      }
+    ]
+  },
+  "aspects": {
+    "characteristics": [
+      {
+        "id": "b17-diameter",
+        "kind": "diameter",
+        "label": "Durchmesser B17",
+        "targets": [
+          {
+            "ref": "b17-cylinder",
+            "role": "evaluated"
+          }
+        ]
+      },
+      {
+        "id": "b17-depth",
+        "kind": "depth",
+        "label": "Nutzbare zylindrische Tiefe B17",
+        "axisRef": "b17-axis",
+        "targets": [
+          {
+            "ref": "b17-mouth",
+            "role": "start"
+          },
+          {
+            "ref": "b17-depth-end",
+            "role": "end"
+          }
+        ]
+      },
+      {
+        "id": "b17-b18-spacing",
+        "kind": "distance",
+        "label": "Achsabstand B17/B18",
+        "description": "Abstand paralleler nominaler Achsen; Lage und Parallelität sind noch nicht numerisch modelliert.",
+        "targets": [
+          {
+            "ref": "b17-axis",
+            "role": "first"
+          },
+          {
+            "ref": "b18-axis",
+            "role": "second"
+          }
+        ]
+      }
+    ],
+    "specifications": [
+      {
+        "id": "spec-diameter",
+        "targetRefs": [
+          "b17-diameter"
+        ],
+        "expression": {
+          "kind": "fit",
+          "nominal": 8,
+          "unit": "mm",
+          "designation": "H7",
+          "standardRef": "iso-286"
+        },
+        "sourceText": "Ø 8 H7",
+        "status": "interpreted",
+        "sourceRefs": [
+          "drawing-c"
+        ]
+      },
+      {
+        "id": "spec-depth",
+        "targetRefs": [
+          "b17-depth"
+        ],
+        "expression": {
+          "kind": "limits",
+          "nominal": 12,
+          "lower": 11.8,
+          "upper": 12.2,
+          "unit": "mm"
+        },
+        "sourceText": "12 ± 0,2",
+        "status": "interpreted",
+        "sourceRefs": [
+          "drawing-c"
+        ]
+      },
+      {
+        "id": "spec-spacing",
+        "targetRefs": [
+          "b17-b18-spacing"
+        ],
+        "expression": {
+          "kind": "limits",
+          "nominal": 30,
+          "lower": 29.9,
+          "upper": 30.1,
+          "unit": "mm"
+        },
+        "status": "captured",
+        "sourceRefs": [
+          "drawing-c"
+        ]
+      }
+    ],
+    "operations": [
+      {
+        "id": "finish-b17",
+        "label": "B17 spanend nachbearbeiten",
+        "description": "Synthetischer Vorschlag, keine reale ERP-STEP-ID und keine Zusage der Fertigungsfähigkeit."
+      }
+    ],
+    "assessments": [
+      {
+        "id": "manufacture-diameter",
+        "scope": "manufacturability",
+        "targetRefs": [
+          "spec-diameter"
+        ],
+        "outcome": "conditional",
+        "rationale": "Illustration, keine reale Prozessfreigabe.",
+        "conditions": [
+          {
+            "description": "Geeignete Nachbearbeitung festlegen und Fähigkeit nachweisen.",
+            "operationRef": "finish-b17"
+          }
+        ]
+      },
+      {
+        "id": "inspect-depth",
+        "scope": "inspectability",
+        "targetRefs": [
+          "spec-depth"
+        ],
+        "outcome": "undetermined",
+        "rationale": "Zugänglichkeit und geeignetes Prüfverfahren sind noch zu prüfen."
+      }
+    ]
+  },
+  "traceability": {
+    "sources": [
+      {
+        "id": "drawing-c",
+        "kind": "drawing",
+        "revision": "C",
+        "label": "Synthetische Zeichnung"
+      },
+      {
+        "id": "iso-286",
+        "kind": "standard",
+        "label": "ISO 286",
+        "section": "Ausgabe und konkrete Grenzwerttabelle noch aufzulösen"
+      }
+    ],
+    "anchors": [
+      {
+        "id": "callout-b17",
+        "sourceRef": "drawing-c",
+        "purpose": "evidences",
+        "state": "proposed",
+        "targetRefs": [
+          "spec-diameter",
+          "spec-depth"
+        ],
+        "locator": {
+          "page": 1,
+          "view": "Schnitt A-A"
+        }
+      }
+    ]
+  }
+}
+
