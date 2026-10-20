@@ -1,0 +1,1375 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:context-loom:information-model:0.3.0",
+  "title": "Produkt, Geometrie und zugeordnete Aspekte – Entwurf 0.3.0",
+  "description": "Experimenteller Strukturentwurf. Gruppen sind optional; vorhandene Datensätze benötigen technische Identität und typgerechte Inhalte. Keine globale Prüfpflicht, kein Laufzeitcontract und kein QIF-Export.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "const": "0.3.0"
+    },
+    "profiles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "product": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "definitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/definition"
+          }
+        },
+        "occurrences": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/occurrence"
+          }
+        },
+        "instances": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/instance"
+          }
+        }
+      },
+      "required": []
+    },
+    "geometry": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "regions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/region"
+          }
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/feature"
+          }
+        },
+        "elements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/element"
+          }
+        },
+        "frames": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/frame"
+          }
+        },
+        "relations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/relation"
+          }
+        }
+      },
+      "required": []
+    },
+    "aspects": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "characteristics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/characteristic"
+          }
+        },
+        "specifications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/specification"
+          }
+        },
+        "assessments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/assessment"
+          }
+        },
+        "operations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/operation"
+          }
+        },
+        "inspection": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "methods": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/method"
+              }
+            },
+            "resources": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/resource"
+              }
+            },
+            "plans": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/plan"
+              }
+            },
+            "tasks": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/task"
+              }
+            },
+            "runs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/run"
+              }
+            },
+            "results": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/result"
+              }
+            }
+          },
+          "required": []
+        }
+      },
+      "required": []
+    },
+    "traceability": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/source"
+          }
+        },
+        "anchors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/anchor"
+          }
+        }
+      },
+      "required": []
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9._:-]*$"
+    },
+    "definition": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "kind": {
+          "enum": [
+            "product",
+            "system",
+            "subsystem",
+            "assembly",
+            "part"
+          ]
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "kind"
+      ]
+    },
+    "occurrence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "assemblyRef": {
+          "$ref": "#/$defs/id"
+        },
+        "definitionRef": {
+          "$ref": "#/$defs/id"
+        }
+      },
+      "required": [
+        "id",
+        "assemblyRef",
+        "definitionRef"
+      ]
+    },
+    "instance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "definitionRef": {
+          "$ref": "#/$defs/id"
+        },
+        "serialNumber": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "definitionRef"
+      ]
+    },
+    "region": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "feature": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "kind": {
+          "enum": [
+            "hole",
+            "rib",
+            "slot",
+            "pattern",
+            "custom"
+          ]
+        },
+        "holeType": {
+          "enum": [
+            "blind",
+            "through"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "kind"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "holeType"
+            ]
+          },
+          "then": {
+            "properties": {
+              "kind": {
+                "const": "hole"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "element": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "kind": {
+          "enum": [
+            "plane",
+            "cylinder",
+            "axis",
+            "point",
+            "edge",
+            "freeform"
+          ]
+        },
+        "basis": {
+          "enum": [
+            "nominal",
+            "extracted",
+            "associated"
+          ]
+        },
+        "frameRef": {
+          "$ref": "#/$defs/id"
+        }
+      },
+      "required": [
+        "id",
+        "kind"
+      ]
+    },
+    "frame": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "ownerRef": {
+          "$ref": "#/$defs/id"
+        },
+        "parentFrameRef": {
+          "$ref": "#/$defs/id"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "relation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "kind": {
+          "enum": [
+            "part-of",
+            "located-in",
+            "derived-from"
+          ]
+        },
+        "from": {
+          "$ref": "#/$defs/id"
+        },
+        "to": {
+          "$ref": "#/$defs/id"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "from",
+        "to"
+      ]
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ref": {
+          "$ref": "#/$defs/id"
+        },
+        "role": {
+          "enum": [
+            "evaluated",
+            "start",
+            "end",
+            "first",
+            "second"
+          ]
+        }
+      },
+      "required": [
+        "ref",
+        "role"
+      ]
+    },
+    "characteristic": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "kind": {
+          "enum": [
+            "diameter",
+            "depth",
+            "distance",
+            "angle",
+            "surface-texture",
+            "material",
+            "colour",
+            "custom"
+          ]
+        },
+        "targets": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/target"
+          }
+        },
+        "axisRef": {
+          "$ref": "#/$defs/id"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "targets"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "diameter"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "targets": {
+                "minItems": 1,
+                "maxItems": 1,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "ref": {
+                      "$ref": "#/$defs/id"
+                    },
+                    "role": {
+                      "const": "evaluated"
+                    }
+                  },
+                  "required": [
+                    "ref",
+                    "role"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "depth"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "axisRef"
+            ],
+            "properties": {
+              "targets": {
+                "minItems": 2,
+                "maxItems": 2,
+                "allOf": [
+                  {
+                    "contains": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "ref": {
+                          "$ref": "#/$defs/id"
+                        },
+                        "role": {
+                          "const": "start"
+                        }
+                      },
+                      "required": [
+                        "ref",
+                        "role"
+                      ]
+                    },
+                    "minContains": 1,
+                    "maxContains": 1
+                  },
+                  {
+                    "contains": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "ref": {
+                          "$ref": "#/$defs/id"
+                        },
+                        "role": {
+                          "const": "end"
+                        }
+                      },
+                      "required": [
+                        "ref",
+                        "role"
+                      ]
+                    },
+                    "minContains": 1,
+                    "maxContains": 1
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "distance",
+                  "angle"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "targets": {
+                "minItems": 2,
+                "maxItems": 2,
+                "allOf": [
+                  {
+                    "contains": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "ref": {
+                          "$ref": "#/$defs/id"
+                        },
+                        "role": {
+                          "const": "first"
+                        }
+                      },
+                      "required": [
+                        "ref",
+                        "role"
+                      ]
+                    },
+                    "minContains": 1,
+                    "maxContains": 1
+                  },
+                  {
+                    "contains": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "ref": {
+                          "$ref": "#/$defs/id"
+                        },
+                        "role": {
+                          "const": "second"
+                        }
+                      },
+                      "required": [
+                        "ref",
+                        "role"
+                      ]
+                    },
+                    "minContains": 1,
+                    "maxContains": 1
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "custom"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "description"
+            ]
+          }
+        }
+      ]
+    },
+    "expression": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "limits"
+            },
+            "nominal": {
+              "type": "number"
+            },
+            "lower": {
+              "type": "number"
+            },
+            "upper": {
+              "type": "number"
+            },
+            "unit": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "kind",
+            "nominal",
+            "lower",
+            "upper",
+            "unit"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "fit"
+            },
+            "nominal": {
+              "type": "number"
+            },
+            "unit": {
+              "type": "string",
+              "minLength": 1
+            },
+            "designation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "standardRef": {
+              "$ref": "#/$defs/id"
+            }
+          },
+          "required": [
+            "kind",
+            "nominal",
+            "unit",
+            "designation",
+            "standardRef"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "text"
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "kind",
+            "text"
+          ]
+        }
+      ]
+    },
+    "specification": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "targetRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "expression": {
+          "$ref": "#/$defs/expression"
+        },
+        "sourceText": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "captured",
+            "interpreted",
+            "confirmed"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "targetRefs",
+        "expression"
+      ]
+    },
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "scope": {
+          "enum": [
+            "manufacturability",
+            "inspectability"
+          ]
+        },
+        "targetRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "outcome": {
+          "enum": [
+            "undetermined",
+            "feasible",
+            "conditional",
+            "not-feasible"
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "description": {
+                "type": "string",
+                "minLength": 1
+              },
+              "operationRef": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "required": [
+              "description"
+            ]
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "id",
+        "scope",
+        "targetRefs",
+        "outcome"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "outcome": {
+                "const": "conditional"
+              }
+            },
+            "required": [
+              "outcome"
+            ]
+          },
+          "then": {
+            "required": [
+              "conditions"
+            ]
+          }
+        }
+      ]
+    },
+    "method": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "resource": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "kind": {
+          "enum": [
+            "device",
+            "fixture",
+            "software"
+          ]
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "status": {
+          "enum": [
+            "draft",
+            "reviewed",
+            "released"
+          ]
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "planRef": {
+          "$ref": "#/$defs/id"
+        },
+        "specificationRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "methodRef": {
+          "$ref": "#/$defs/id"
+        },
+        "resourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "stage": {
+          "enum": [
+            "as-built",
+            "postprocessed",
+            "final"
+          ]
+        },
+        "openItems": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "id",
+        "planRef",
+        "specificationRefs"
+      ]
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "instanceRef": {
+          "$ref": "#/$defs/id"
+        },
+        "planRef": {
+          "$ref": "#/$defs/id"
+        }
+      },
+      "required": [
+        "id",
+        "instanceRef"
+      ]
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "runRef": {
+          "$ref": "#/$defs/id"
+        },
+        "characteristicRef": {
+          "$ref": "#/$defs/id"
+        },
+        "specificationRef": {
+          "$ref": "#/$defs/id"
+        },
+        "value": {
+          "type": [
+            "number",
+            "string",
+            "boolean"
+          ]
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "decision": {
+          "enum": [
+            "not-evaluated",
+            "conforming",
+            "nonconforming",
+            "indeterminate"
+          ]
+        },
+        "decisionRule": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "runRef",
+        "characteristicRef",
+        "value"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "value": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "value"
+            ]
+          },
+          "then": {
+            "required": [
+              "unit"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "decision": {
+                "enum": [
+                  "conforming",
+                  "nonconforming"
+                ]
+              }
+            },
+            "required": [
+              "decision"
+            ]
+          },
+          "then": {
+            "required": [
+              "specificationRef",
+              "decisionRule"
+            ]
+          }
+        }
+      ]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "kind": {
+          "enum": [
+            "drawing",
+            "cad",
+            "gom",
+            "standard",
+            "internal"
+          ]
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "anchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "sourceRef": {
+          "$ref": "#/$defs/id"
+        },
+        "targetRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "purpose": {
+          "enum": [
+            "identifies",
+            "evidences"
+          ]
+        },
+        "state": {
+          "enum": [
+            "proposed",
+            "confirmed",
+            "rejected"
+          ]
+        },
+        "locator": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "page": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "view": {
+              "type": "string",
+              "minLength": 1
+            },
+            "externalId": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": []
+        }
+      },
+      "required": [
+        "id",
+        "sourceRef",
+        "targetRefs",
+        "purpose",
+        "state"
+      ]
+    }
+  }
+}
+
