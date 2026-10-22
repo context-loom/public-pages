@@ -12,7 +12,7 @@
 <body>
 <header><div class="eyebrow">FKM · Diskussionsgrundlage · 22. Oktober 2026</div><h1>Formnext 2026 – Stelenreview</h1><p>Alle 20 Original-Druckmotive von 2025, heruntergerechnet und mit ersten Anmerkungen zur Wiederverwendung. Bild anklicken für die vergrößerte Ansicht; Originalformulierungen bleiben unverändert.</p></header>
 <main><section class="intro"><strong>Gesamtbefund:</strong> Einheitliches und fernwirksames Layout aus blauem Titelbereich, großem Bildmotiv und grünem Faktenfeld. Die Bildsprache ist industriell glaubwürdig; die Bullet-Listen sind aus größerer Entfernung kaum lesbar. Zahlen zu Maschinenpark und Teileausstoß sowie Material-/Zertifizierungsangaben müssen für 2026 überprüft werden. Die zentralen Claims <em>We Invested So You Don’t Have To</em>, <em>Fully Finished</em> und <em>Added Value by Design</em> sind grundsätzlich weiterhin tragfähig.</section>
-<nav class="toolbar" id="tabs" aria-label="Stelen auswählen"></nav>
+<nav class="toolbar" aria-label="Jahresansicht"><button class="tab active" id="view26" aria-pressed="true">Entwurf 2026</button><button class="tab" id="view25" aria-pressed="false">Original 2025</button></nav><div class="intro" id="proposalNote">2026: Stele 1 heißt Make-or-Buy. Die Kapazitätsstelen 2 und 3 werden als identische gemischte Kunststoff-/Metallstelen an entgegengesetzten Standrändern gezeigt. Bildwechsel (1–2 Motive) und genaue Ausrichtung folgen. Die angezeigten Motive enthalten vorläufig weiterhin den Originaldrucktext von 2025.</div><nav class="toolbar" id="tabs" aria-label="Stelen auswählen"></nav>
 <section aria-labelledby="heading"><h2 id="heading">Alle fünf Stelen</h2><div class="grid" id="cards"></div></section>
 <p class="note">Quellen: Fünf finale PDF-Druckvorlagen vom 06.11.2025 im Drive-Ordner FKM/formnext. Die Seitenbilder wurden einschließlich Grafik, Text und Anordnung aus den PDFs gerendert, auf 580 Pixel Breite und WebP verkleinert. Die Bewertung ist vorläufig und keine Freigabe für den Druck 2026.</p></main>
 <footer>Führende Quelle: context-loom/_workbench/formnext-2026 · Veröffentlichung: context-loom/public-pages/formnext-2026</footer>
@@ -23,26 +23,29 @@ const data=[["1","Make-or-Buy","We Invested So You Don’t Have To","30 Industri
 const topics={"1":"Make-or-Buy · Industrielle Fertigung","2":"Kunststoff · Serienkapazität","3":"Metall · Serienkapazität","4":"Einbaufertige Bauteile","5":"Konstruktiver Mehrwert"};
 const src=(stele,side)=>"./assets/stele-"+stele+"-"+side+".webp";
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-let selected="all",visible=[],current=0;
+let selected="all",visible=[],current=0,year=2026;
+const plan26=[0,1,2,3,4,5,8,9,4,5,8,9,12,13,14,15,16,17,18,19];
 const labels={keep:"Vorl. beibehalten",adapt:"Anpassen",check:"Sachstand prüfen"};
 function render(){
   document.getElementById("tabs").innerHTML=[["all","Alle 20 Motive"],...Object.keys(topics).map(k=>[k,"Stele "+k])].map(([v,t])=>'<button class="tab '+(selected===v?'active':'')+'" data-key="'+v+'" aria-pressed="'+(selected===v)+'">'+t+'</button>').join("");
   document.querySelectorAll("button[data-key]").forEach(b=>b.addEventListener("click",()=>{selected=b.dataset.key;render()}));
-  document.getElementById("heading").textContent=selected==="all"?"Alle fünf Stelen":topics[selected];
-  visible=data.map((x,i)=>({x,i})).filter(({x})=>selected==="all"||x[0]===selected);
-  document.getElementById("cards").innerHTML=visible.map(({x,i},at)=>{
+  document.getElementById("heading").textContent=(year===2026?"Entwurf 2026 · ":"Original 2025 · ")+(selected==="all"?"Alle fünf Stelen":(year===2026&&(selected==="2"||selected==="3")?"Gemischte Fertigungskapazität":topics[selected]));
+  visible=(year===2026?plan26:data.map((_,i)=>i)).map((i,position)=>({x:data[i],i,stand:String(Math.floor(position/4)+1),face:position%4+1})).filter(({stand})=>selected==="all"||stand===selected);
+  document.getElementById("cards").innerHTML=visible.map(({x,i,stand,face},at)=>{
     const [no,topic,title,sub,bullets,pic,status,note]=x;
-    const side=i%4+1,alt="Stele "+no+", Seite "+side+": "+title+". Motiv: "+pic;
-    return '<article class="card"><button class="preview" data-at="'+at+'" aria-label="'+esc(alt)+' vergrößern"><img src="'+src(no,side)+'" alt="'+esc(alt)+'" loading="lazy" decoding="async" width="580" height="892"></button><div class="detail"><div class="meta">Stele '+no+' · Seite '+side+' · Original 2025</div><h3>'+esc(topic)+'</h3><span class="status '+status+'">'+labels[status]+'</span><p>'+esc(note)+'</p><details><summary>Originaltext · strukturiert</summary><strong>'+esc(title)+'</strong>'+(sub?'<p>'+esc(sub)+'</p>':'')+'<ul>'+bullets.split("|").map(x=>'<li>'+esc(x)+'</li>').join("")+'</ul></details></div></article>';
+    const side=i%4+1,alt="Stele "+stand+", Fläche "+face+": "+title+". Motiv: "+pic;
+    return '<article class="card"><button class="preview" data-at="'+at+'" aria-label="'+esc(alt)+' vergrößern"><img src="'+src(no,side)+'" alt="'+esc(alt)+'" loading="lazy" decoding="async" width="580" height="892"></button><div class="detail"><div class="meta">Stele '+stand+' · Fläche '+face+' · '+(year===2026?'Entwurf 2026 (Motiv 2025)':'Original 2025')</div><h3>'+esc(topic)+'</h3><span class="status '+status+'">'+labels[status]+'</span><p>'+esc(note)+'</p><details><summary>Originaltext · strukturiert</summary><strong>'+esc(title)+'</strong>'+(sub?'<p>'+esc(sub)+'</p>':'')+'<ul>'+bullets.split("|").map(x=>'<li>'+esc(x)+'</li>').join("")+'</ul></details></div></article>';
   }).join("");
   document.querySelectorAll(".preview").forEach(b=>b.addEventListener("click",()=>openBox(Number(b.dataset.at))));
 }
-function updateBox(){const {x,i}=visible[current];const side=i%4+1;const img=document.getElementById("large");img.src=src(x[0],side);img.alt=x[2]+" · "+x[5];document.getElementById("caption").textContent="Stele "+x[0]+" · Seite "+side+" · "+x[2]+"  ("+(current+1)+"/"+visible.length+")"}
+function updateBox(){const {x,i,stand,face}=visible[current];const side=i%4+1;const img=document.getElementById("large");img.src=src(x[0],side);img.alt=x[2]+" · "+x[5];document.getElementById("caption").textContent="Stele "+stand+" · Fläche "+face+" · "+x[2]+"  ("+(current+1)+"/"+visible.length+")"}
 function openBox(i){current=i;updateBox();document.getElementById("lightbox").classList.add("open");document.getElementById("close").focus()}
 function closeBox(){document.getElementById("lightbox").classList.remove("open")}
 function advance(n){current=(current+n+visible.length)%visible.length;updateBox()}
 document.getElementById("close").onclick=closeBox;document.getElementById("prev").onclick=()=>advance(-1);document.getElementById("next").onclick=()=>advance(1);
 document.getElementById("lightbox").addEventListener("click",e=>{if(e.target.id==="lightbox")closeBox()});
 document.addEventListener("keydown",e=>{if(!document.getElementById("lightbox").classList.contains("open"))return;if(e.key==="Escape")closeBox();if(e.key==="ArrowRight")advance(1);if(e.key==="ArrowLeft")advance(-1)});
+document.getElementById("view26").onclick=()=>setYear(2026);document.getElementById("view25").onclick=()=>setYear(2025);
+function setYear(y){year=y;for(const k of [2025,2026]){const b=document.getElementById("view"+String(k).slice(-2));b.classList.toggle("active",k===y);b.setAttribute("aria-pressed",String(k===y))}document.getElementById("proposalNote").hidden=y!==2026;render()}
 render();
 </script></body></html>
