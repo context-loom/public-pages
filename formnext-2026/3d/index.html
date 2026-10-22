@@ -1,11 +1,11 @@
 <!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FKM · Formnext 2026 · 3D-Standplanung</title>
 <style>
-:root{font:14px/1.4 system-ui,-apple-system,Segoe UI,sans-serif;color:#1b2f3a;background:#f3f6f7}*{box-sizing:border-box}body{margin:0}header{background:#19384f;color:white;padding:15px 22px;display:flex;align-items:center;flex-wrap:wrap;gap:12px;justify-content:space-between}h1{font-size:1.35rem;margin:0}header a{color:#c5e7f4}.shell{display:grid;grid-template-columns:minmax(380px,1fr) 365px;min-height:calc(100vh - 65px)}#viewport{height:calc(100vh - 65px);min-height:560px;position:relative;background:#dfe9ed}#canvas{position:absolute;inset:0}#canvas canvas{display:block;width:100%;height:100%}.tools{position:absolute;top:13px;left:13px;display:flex;flex-wrap:wrap;gap:5px;max-width:calc(100% - 25px)}button,.action{background:white;border:1px solid #b4c4cb;border-radius:6px;color:#1b394c;padding:8px 11px;cursor:pointer;font:inherit}button:hover{background:#e8f2f6}button.active{background:#244b60;color:#fff}.hint{position:absolute;bottom:12px;left:13px;right:12px;padding:8px 11px;background:#ffffffdb;border-radius:6px;font-size:.83rem}aside{background:white;border-left:1px solid #d0dfe6;max-height:calc(100vh - 65px);overflow:auto;padding:17px}h2{font-size:1.05rem;margin:12px 0 7px}h3{font-size:.94rem;margin:13px 0 7px}p{margin:6px 0 12px}.muted{color:#5a6e79;font-size:.85rem}.tbl{width:100%;border-collapse:collapse;font-size:.84rem}.tbl td,.tbl th{padding:5px 4px;border-bottom:1px solid #e0e8eb;text-align:left}.tbl th{font-size:.8rem}.tbl input{width:65px;max-width:100%;border:1px solid #cad7db;padding:5px;border-radius:4px;font:inherit}.tbl td:first-child{width:45%}.edit{background:#fff8e5}.subtle{background:#f5f8fa;padding:8px 10px;border-radius:6px;border:1px solid #dee8ed}.controls{display:flex;gap:6px;flex-wrap:wrap}.controls button{font-size:.86rem}.steles select{font:inherit;padding:5px;width:100%;border:1px solid #cad7db;border-radius:4px}.warning{border-left:3px solid #dca53f;background:#fff8e8;padding:9px 11px}.stat{font-size:.9rem;color:#23495b;font-weight:600}.link{color:#206887}.file{font-size:.83rem}.swatch{display:inline-block;height:9px;width:9px;border-radius:2px;margin-right:4px}.green{background:#8ac434}.blue{background:#2c9abe}.separator{border:0;border-top:1px solid #dce7ec;margin:17px 0}label{cursor:pointer}small{font-size:.8rem}@media(max-width:1000px){.shell{grid-template-columns:1fr}#viewport{height:65vh;min-height:440px}aside{max-height:none;border-left:0}header{gap:8px}}
+:root{font:14px/1.4 system-ui,-apple-system,Segoe UI,sans-serif;color:#1b2f3a;background:#f3f6f7}*{box-sizing:border-box}body{margin:0}header{background:#19384f;color:white;padding:15px 22px;display:flex;align-items:center;flex-wrap:wrap;gap:12px;justify-content:space-between}h1{font-size:1.35rem;margin:0}header a{color:#c5e7f4}.shell{display:grid;grid-template-columns:minmax(380px,1fr) 365px;min-height:calc(100vh - 65px)}#viewport{height:calc(100vh - 65px);min-height:560px;position:relative;background:#dfe9ed}#canvas{position:absolute;inset:0}#canvas canvas{display:block;width:100%;height:100%}.tools{position:absolute;top:13px;left:13px;display:flex;flex-wrap:wrap;gap:5px;max-width:calc(100% - 25px)}button,.action{background:white;border:1px solid #b4c4cb;border-radius:6px;color:#1b394c;padding:8px 11px;cursor:pointer;font:inherit}button:hover{background:#e8f2f6}button.active{background:#244b60;color:#fff}details.settings{border:1px solid #c9d9de;border-radius:7px;margin:13px 0;background:#f7fafb;overflow:hidden}details.settings>summary{padding:11px 12px;font-weight:700;cursor:pointer;background:#e7f0f3}details.settings>div{padding:9px}.settings .tbl{background:#fff}.dragging{cursor:grabbing!important}.hint{position:absolute;bottom:12px;left:13px;right:12px;padding:8px 11px;background:#ffffffdb;border-radius:6px;font-size:.83rem}aside{background:white;border-left:1px solid #d0dfe6;max-height:calc(100vh - 65px);overflow:auto;padding:17px}h2{font-size:1.05rem;margin:12px 0 7px}h3{font-size:.94rem;margin:13px 0 7px}p{margin:6px 0 12px}.muted{color:#5a6e79;font-size:.85rem}.tbl{width:100%;border-collapse:collapse;font-size:.84rem}.tbl td,.tbl th{padding:5px 4px;border-bottom:1px solid #e0e8eb;text-align:left}.tbl th{font-size:.8rem}.tbl input{width:65px;max-width:100%;border:1px solid #cad7db;padding:5px;border-radius:4px;font:inherit}.tbl td:first-child{width:45%}.edit{background:#fff8e5}.subtle{background:#f5f8fa;padding:8px 10px;border-radius:6px;border:1px solid #dee8ed}.controls{display:flex;gap:6px;flex-wrap:wrap}.controls button{font-size:.86rem}.steles select{font:inherit;padding:5px;width:100%;border:1px solid #cad7db;border-radius:4px}.warning{border-left:3px solid #dca53f;background:#fff8e8;padding:9px 11px}.stat{font-size:.9rem;color:#23495b;font-weight:600}.link{color:#206887}.file{font-size:.83rem}.swatch{display:inline-block;height:9px;width:9px;border-radius:2px;margin-right:4px}.green{background:#8ac434}.blue{background:#2c9abe}.separator{border:0;border-top:1px solid #dce7ec;margin:17px 0}label{cursor:pointer}small{font-size:.8rem}@media(max-width:1000px){.shell{grid-template-columns:1fr}#viewport{height:65vh;min-height:440px}aside{max-height:none;border-left:0}header{gap:8px}}
 </style><script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script></head>
 <body><header><h1>Formnext 2026 · 3D-Messestand</h1><div><a href="../">Stelenreview</a> · <a href="https://github.com/context-loom/_workbench/tree/main/formnext-2026">Arbeitsquelle</a></div></header>
-<div class="shell"><main id="viewport"><div id="canvas"></div><div class="tools"><button data-camera="iso" class="active">3D</button><button data-camera="top">Grundriss</button><button data-camera="visitor">Besucherhöhe</button><button id="toggleImages">Grafiken: an</button><button id="reset">Maße zurücksetzen</button></div><div class="hint">Linke Maustaste: drehen · Mausrad: zoomen · rechte Maustaste: verschieben. Grundriss: X nach rechts, Z nach unten. Blau: feste Maße · gelb: Schätzwerte.</div></main>
-<aside><h2>Maßtabelle <span class="muted">in Metern</span></h2><p class="muted">Standfläche 8 × 8 m bestätigt, alle weiteren Werte sind initiale Näherungen. Eingaben aktualisieren das 3D-Modell direkt. Stelenpositionen sind Mittelpunkte; Drehung in Grad.</p>
-<div id="dimensions"></div><hr class="separator"><h2>Präsentationsstelen</h2><p class="muted">Zwei Kapazitätsstelen mit identischem Kunststoff-/Metallmix an verschiedenen Standrändern. Die Belegung ist ein erster 2026-Entwurf.</p><div id="steles"></div>
+<div class="shell"><main id="viewport"><div id="canvas"></div><div class="tools"><button data-camera="iso" class="active">3D</button><button data-camera="top">Grundriss</button><button data-camera="visitor">Besucherhöhe</button><button id="toggleImages">Grafiken: an</button><button id="toggleFrame">FKM-Rahmen: an</button><button id="reset">Maße zurücksetzen</button></div><div class="hint">Stelen, Tische und Stühle mit linker Maustaste ziehen · freien Bereich drehen · Mausrad zoomen · rechte Taste Ansicht verschieben. Grundriss: X nach rechts, Z nach unten. Blau: feste Maße · gelb: Schätzwerte.</div></main>
+<aside><h2>Maßtabelle <span class="muted">in Metern</span></h2><p class="muted">Standfläche 8 × 8 m bestätigt, übrige Angaben zunächst Näherungen. Möbel und Stelen lassen sich im 3D-Modell ziehen; ihre X/Z-Koordinaten in Metern werden synchronisiert.</p>
+<div id="dimensions"></div><details class="settings" open><summary>Schwebender FKM-Rahmen – Geometrie</summary><div id="frameDimensions"></div></details><hr class="separator"><h2>Präsentationsstelen</h2><p class="muted">Zwei Kapazitätsstelen mit identischem Kunststoff-/Metallmix an verschiedenen Standrändern. Die Belegung ist ein erster 2026-Entwurf.</p><div id="steles"></div><details class="settings"><summary>Steh- und Besprechungstische · Positionen</summary><div id="tables"></div></details><details class="settings"><summary>Stühle und Hocker · Positionen</summary><div id="chairs"></div></details>
 <hr class="separator"><h2>Variante sichern</h2><div class="controls"><button id="export">JSON herunterladen</button><label class="action">JSON einlesen<input type="file" id="import" accept="application/json,.json" style="display:none"></label></div>
 <h3>Planungsstatus</h3><p class="warning">Kein verbindlicher Messestandplan. Der schwebende grüne FKM-Rahmen ist nach den perspektivischen Handskizzen angenähert (Unterkante 5 m, Oberkante 7 m). Die tatsächliche Aufhängung, Lastabtragung, Messehöhen und Standfreigaben sind nicht modelliert und müssen durch den Standbauer geprüft werden.</p>
 <p class="muted">Die 2025-Drucklayouts sind als Texturen eingebunden. Für 2026 wird nur Stele 1 im Modell überlagert: <strong>Make-or-Buy</strong> statt des verworfenen Claims.</p><p class="stat" id="status">3D wird geladen …</p></aside></div>
@@ -16,8 +16,15 @@ const defaults={
  boothW:8,boothD:8,roomW:2.5,roomTop:2.5,roomBottom:2.5,roomH:2.7,
  counterW:.7,counterD:3,counterH:1.12,counterX:3.35,counterZ:4,
  pedestalW:1,pedestalD:1,pedestalH:2.5,tableD:.65,tableH:1.1,
- frameX:5.15,frameZ:4,frameW:5.3,frameD:5.3,frameBottom:5,frameHeight:2,frameThickness:.10,
- steles:[{x:7.25,z:4,rot:90},{x:7.25,z:.75,rot:0},{x:7.25,z:7.25,rot:0},{x:4,z:.75,rot:0},{x:4,z:7.25,rot:0}]
+ frameX:4.65,frameZ:4,frameW:4.6,frameD:4.6,frameBottom:5,frameHeight:2,frameThickness:.10,frameRot:45,
+ steles:[{x:7.25,z:4,rot:90},{x:7.25,z:.75,rot:0},{x:7.25,z:7.25,rot:0},{x:4,z:.75,rot:0},{x:4,z:7.25,rot:0}],
+ standingTables:[{x:4.5,z:1.6},{x:5.7,z:3.25},{x:5.5,z:6.4},{x:4.3,z:5.65}],
+ meetingTables:[{x:1.25,z:1.2},{x:1.25,z:6.8}],
+ chairs:[
+ {x:.45,z:1.2,rot:90},{x:2.05,z:1.2,rot:-90},{x:1.25,z:.4,rot:0},{x:1.25,z:2,rot:180},
+ {x:.45,z:6.8,rot:90},{x:2.05,z:6.8,rot:-90},{x:1.25,z:6,rot:0},{x:1.25,z:7.6,rot:180},
+ {x:4.05,z:2.95,rot:90},{x:4.05,z:3.65,rot:90},{x:4.05,z:4.35,rot:90},{x:4.05,z:5.05,rot:90}
+ ]
 };
 const labels=[
 ["Standbreite","boothW",false],["Standtiefe","boothD",false],
@@ -26,17 +33,30 @@ const labels=[
 ["Thekenbreite","counterW",true],["Thekenlänge","counterD",true],["Thekenhöhe","counterH",true],["Theke X","counterX",true],["Theke Z","counterZ",true],
 ["Stelenbreite","pedestalW",true],["Stelentiefe","pedestalD",true],["Stelenhöhe","pedestalH",true],
 ["Stehtisch Ø","tableD",true],["Stehtischhöhe","tableH",true],
-["FKM-Rahmen Mitte X","frameX",true],["FKM-Rahmen Mitte Z","frameZ",true],["Rahmenbreite","frameW",true],["Rahmentiefe","frameD",true],["Rahmen Unterkante","frameBottom",true],["Rahmenhöhe","frameHeight",true],["Rahmenprofil","frameThickness",true]
+["FKM-Rahmen Mitte X","frameX",true],["FKM-Rahmen Mitte Z","frameZ",true],["Rahmenbreite","frameW",true],["Rahmentiefe","frameD",true],["Rahmen Unterkante","frameBottom",true],["Rahmenhöhe","frameHeight",true],["Rahmenprofil","frameThickness",true],["Rahmenrotation °","frameRot",true]
 ];
 const valid=o=>o&&typeof o==="object";
-let cfg=structuredClone(defaults),showImages=true,meshes=[],textureCache=new Map();
-const dimNode=document.getElementById("dimensions"),steleNode=document.getElementById("steles");
+let cfg=structuredClone(defaults),showImages=true,showFrame=true,textureCache=new Map(),draggables=[];
+const dimNode=document.getElementById("dimensions"),frameNode=document.getElementById("frameDimensions"),steleNode=document.getElementById("steles");
 const cols=["#79c038","#2d9bbb","#2d9bbb","#a0c947","#a0c947"];
 function field(v,key,min=.1,max=12){return '<input type="number" step="0.05" min="'+min+'" max="'+max+'" value="'+Number(v).toFixed(2).replace(/\.00$/,"")+'" data-key="'+key+'">'}
+function rowsFor(label,entries,prefix,rotation=false){
+return '<table class="tbl"><thead><tr><th>'+label+'</th><th>X</th><th>Z</th>'+(rotation?'<th>°</th>':'')+'</tr></thead><tbody>'+entries.map((p,i)=>'<tr><td>'+(i+1)+'</td><td>'+field(p.x,prefix+i+'.x',0,12)+'</td><td>'+field(p.z,prefix+i+'.z',0,12)+'</td>'+(rotation?'<td>'+field(p.rot,prefix+i+'.rot',-360,360)+'</td>':'')+'</tr>').join("")+'</tbody></table>';
+}
 function renderInputs(){
-dimNode.innerHTML='<table class="tbl"><thead><tr><th>Element</th><th>Wert</th><th>Quelle</th></tr></thead><tbody>'+labels.map(([name,k,est])=>'<tr class="'+(est?'edit':'')+'"><td>'+name+'</td><td>'+field(cfg[k],k)+'</td><td>'+(est?'geschätzt':'vorgegeben')+'</td></tr>').join("")+'</tbody></table>';
+const main=labels.filter(([,key])=>!key.startsWith("frame")),frame=labels.filter(([,key])=>key.startsWith("frame"));
+const group=rows=>'<table class="tbl"><thead><tr><th>Element</th><th>Wert</th><th>Quelle</th></tr></thead><tbody>'+rows.map(([name,key,estimated])=>'<tr class="'+(estimated?'edit':'')+'"><td>'+name+'</td><td>'+field(cfg[key],key,key==="frameRot"?-360:.01,key==="frameRot"?360:15)+'</td><td>'+(estimated?'geschätzt':'fix')+'</td></tr>').join("")+'</tbody></table>';
+dimNode.innerHTML=group(main);frameNode.innerHTML=group(frame);
 steleNode.innerHTML='<table class="tbl steles"><thead><tr><th>Stele</th><th>X</th><th>Z</th><th>°</th></tr></thead><tbody>'+cfg.steles.map((p,i)=>'<tr><td><span class="swatch" style="background:'+cols[i]+'"></span>'+(i+1)+(i===0?' Make-or-Buy':i===1||i===2?' Kapazität':'')+'</td><td>'+field(p.x,'s'+i+'.x',0,12)+'</td><td>'+field(p.z,'s'+i+'.z',0,12)+'</td><td>'+field(p.rot,'s'+i+'.rot',-360,360)+'</td></tr>').join("")+'</tbody></table>';
-document.querySelectorAll("input[data-key]").forEach(el=>el.addEventListener("change",()=>{const k=el.dataset.key,v=Number(el.value);if(!Number.isFinite(v))return;if(k.startsWith("s")){const [index,prop]=k.slice(1).split(".");cfg.steles[Number(index)][prop]=v}else cfg[k]=v;renderInputs();rebuild()}));
+document.getElementById("tables").innerHTML='<h3>Stehtische</h3>'+rowsFor("Stehtisch",cfg.standingTables,"t")+'<h3>Besprechungstische</h3>'+rowsFor("Tisch",cfg.meetingTables,"m");
+document.getElementById("chairs").innerHTML=rowsFor("Stuhl / Hocker",cfg.chairs,"c",true);
+document.querySelectorAll("input[data-key]").forEach(el=>el.addEventListener("change",()=>{
+ const key=el.dataset.key,v=Number(el.value);if(!Number.isFinite(v))return;
+ const match=key.match(/^([stmc])(\d+)\.(x|z|rot)$/);
+ if(match){const collections={s:"steles",t:"standingTables",m:"meetingTables",c:"chairs"};cfg[collections[match[1]]][Number(match[2])][match[3]]=v}
+ else cfg[key]=v;
+ renderInputs();rebuild();
+}));
 }
 const holder=document.getElementById("canvas"),scene=new THREE.Scene();scene.background=new THREE.Color(0xe7f0f3);
 const camera=new THREE.PerspectiveCamera(47,1,.05,100);camera.position.set(12,12,14);
@@ -47,12 +67,29 @@ const mat=(c,opacity=1)=>new THREE.MeshStandardMaterial({color:c,transparent:opa
 function putBox(parent,x,y,z,w,h,d,color){let obj=new THREE.Mesh(new THREE.BoxGeometry(Math.max(.005,w),Math.max(.005,h),Math.max(.005,d)),typeof color==="string"||typeof color==="number"?mat(color):color);obj.position.set(x,y,z);obj.receiveShadow=true;obj.castShadow=true;parent.add(obj);return obj}
 function textPlane(parent,text,x,y,z,w,h,bg="#19384f",fg="#fff",rotation=0){const can=document.createElement("canvas");can.width=512;can.height=128;const ctx=can.getContext("2d");ctx.fillStyle=bg;ctx.fillRect(0,0,512,128);ctx.fillStyle=fg;ctx.font="bold 44px sans-serif";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(text,256,64,490);const t=new THREE.CanvasTexture(can);const mesh=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:t,side:THREE.DoubleSide}));mesh.position.set(x,y,z);mesh.rotation.y=rotation;parent.add(mesh);return mesh}
 function circle(parent,x,z,r,y=.04,color="#afbfcc"){let m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,.08,16),mat(color));m.position.set(x,y,z);parent.add(m);return m}
-function standTable(parent,x,z){let group=new THREE.Group();group.position.set(x,0,z);parent.add(group);let shaft=new THREE.Mesh(new THREE.CylinderGeometry(.045,.045,cfg.tableH-.1,12),mat("#657986"));shaft.position.y=(cfg.tableH-.1)/2;group.add(shaft);let top=new THREE.Mesh(new THREE.CylinderGeometry(cfg.tableD/2,cfg.tableD/2,.08,24),mat("#f7fafb"));top.position.y=cfg.tableH;top.castShadow=true;group.add(top);circle(group,0,0,.22,.05,"#66808c")}
+function standTable(parent,x,z){let group=new THREE.Group();group.position.set(x,0,z);parent.add(group);let shaft=new THREE.Mesh(new THREE.CylinderGeometry(.045,.045,cfg.tableH-.1,12),mat("#657986"));shaft.position.y=(cfg.tableH-.1)/2;group.add(shaft);let top=new THREE.Mesh(new THREE.CylinderGeometry(cfg.tableD/2,cfg.tableD/2,.08,24),mat("#f7fafb"));top.position.y=cfg.tableH;top.castShadow=true;group.add(top);circle(group,0,0,.22,.05,"#66808c");return group}
+function meetingTable(parent,x,z){
+ const g=new THREE.Group();g.position.set(x,0,z);parent.add(g);
+ putBox(g,0,.7,0,.86,.09,.86,"#fff");
+ for(const dx of [-.33,.33])for(const dz of [-.33,.33])putBox(g,dx,.35,dz,.06,.7,.06,"#dce2e4");
+ return g;
+}
+function chair(parent,p,bar=false){
+ const g=new THREE.Group();g.position.set(p.x,0,p.z);
+ g.rotation.y=THREE.MathUtils.degToRad(p.rot||0);parent.add(g);
+ const seat=bar?.75:.47,size=bar?.38:.47;
+ putBox(g,0,seat,0,size,.07,size,"#f6f7f7");
+ for(const dx of [-size*.37,size*.37])for(const dz of [-size*.37,size*.37])
+   putBox(g,dx,seat*.5,dz,.045,seat,.045,"#aab8bd");
+ putBox(g,0,seat+.25,-size*.44,size,.46,.065,"#f6f7f7");
+ return g;
+}
+function registerDraggable(object,kind,index){draggables.push({object,kind,index});return object}
 const loaders=new THREE.TextureLoader();
 function texture(stele,side){const p="../assets/stele-"+stele+"-"+side+".webp";if(!textureCache.has(p)){let t=loaders.load(p,()=>renderer.render(scene,camera));t.colorSpace=THREE.SRGBColorSpace;textureCache.set(p,t)}return textureCache.get(p)}
 const plan=[[1,1,1,1],[2,2,3,3],[2,2,3,3],[4,4,4,4],[5,5,5,5]],faces=[[1,2,3,4],[1,2,1,2],[1,2,1,2],[1,2,3,4],[1,2,3,4]];
 function addStele(parent,index){
-const p=cfg.steles[index],g=new THREE.Group();g.position.set(p.x,pedestalY(),p.z);g.rotation.y=THREE.MathUtils.degToRad(p.rot);parent.add(g);
+const p=cfg.steles[index],g=new THREE.Group();g.position.set(p.x,pedestalY(),p.z);g.rotation.y=THREE.MathUtils.degToRad(p.rot);parent.add(g);draggables.push({object:g,kind:"steles",index});
 const w=cfg.pedestalW,d=cfg.pedestalD,h=cfg.pedestalH;
 putBox(g,0,0,0,w,h,d,"#d9e4e8");
 for(let side=0;side<4;side++){
@@ -70,7 +107,7 @@ return g
 }
 function addSuspendedFrame(parent){
   // Im Entwurf schwebender, umlaufender Rahmen statt grüner Bodenraute.
-  const g=new THREE.Group();g.position.set(cfg.frameX,cfg.frameBottom+cfg.frameHeight/2,cfg.frameZ);parent.add(g);
+  const g=new THREE.Group();g.position.set(cfg.frameX,cfg.frameBottom+cfg.frameHeight/2,cfg.frameZ);g.rotation.y=THREE.MathUtils.degToRad(cfg.frameRot);parent.add(g);
   const w=cfg.frameW,d=cfg.frameD,h=cfg.frameHeight,t=cfg.frameThickness,green="#8dc529";
   putBox(g,0,0,-d/2,w,h,t,green);putBox(g,0,0,d/2,w,h,t,green);
   putBox(g,-w/2,0,0,t,h,d,green);putBox(g,w/2,0,0,t,h,d,green);
@@ -95,30 +132,90 @@ function pedestalY(){return cfg.pedestalH/2}
 let root=null;
 function rebuild(){
 if(root){scene.remove(root);root.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material&&!o.material.map)o.material.dispose()})}
-root=new THREE.Group();scene.add(root);
+root=new THREE.Group();scene.add(root);draggables=[];
 const w=cfg.boothW,d=cfg.boothD,r=cfg.roomW,top=cfg.roomTop,bottom=cfg.roomBottom,h=cfg.roomH;
-putBox(root,w/2,-.08,d/2,w,.15,d,"#f8fbfd");
-let grid=new THREE.GridHelper(Math.max(w,d),Math.ceil(Math.max(w,d)),0xb5c4c8,0xd5e0e2);grid.position.set(w/2,.004,d/2);root.add(grid);
-const wall="#e5e7e9",edge="#39434b";
-putBox(root,0,h/2,d/2,.08,h,d,edge);
-putBox(root,r,h/2,top/2,.08,h,top,edge);putBox(root,r,h/2,d-bottom/2,.08,h,bottom,edge);
-putBox(root,r/2,h/2,0,r,h,.08,edge);putBox(root,r/2,h/2,d,r,h,.08,edge);
-putBox(root,r/2,h/2,top,r,h,.06,edge);putBox(root,r/2,h/2,d-bottom,r,h,.06,edge);
-putBox(root,r/2,.015,top/2,r,.02,top,"#dee4e6");putBox(root,r/2,.015,d-bottom/2,r,.02,bottom,"#dee4e6");putBox(root,r/2,.015,(top+d-bottom)/2,r,.02,d-top-bottom,"#e9eef0");
+putBox(root,w/2,-.08,d/2,w,.15,d,"#45494b");
+let grid=new THREE.GridHelper(Math.max(w,d),Math.ceil(Math.max(w,d)),0x777e82,0x62686b);grid.position.set(w/2,.004,d/2);root.add(grid);
+const wall="#ffffff",edge="#ffffff";
+putBox(root,0,h/2,d/2,.08,h,d,wall);
+putBox(root,r,h/2,top/2,.08,h,top,wall);putBox(root,r,h/2,d-bottom/2,.08,h,bottom,wall);
+putBox(root,r/2,h/2,0,r,h,.08,wall);putBox(root,r/2,h/2,d,r,h,.08,wall);
+putBox(root,r/2,h/2,top,r,h,.06,wall);putBox(root,r/2,h/2,d-bottom,r,h,.06,wall);
+putBox(root,r/2,.015,top/2,r,.02,top,"#d8d9d9");putBox(root,r/2,.015,d-bottom/2,r,.02,bottom,"#d8d9d9");putBox(root,r/2,.015,(top+d-bottom)/2,r,.02,d-top-bottom,"#d8d9d9");
 textPlane(root,"Besprechung 1",r/2,.07,top/2,1.7,.34,"#dce3e6","#344b59",Math.PI/2);textPlane(root,"Besprechung 2",r/2,.07,d-bottom/2,1.7,.34,"#dce3e6","#344b59",Math.PI/2);
 const counter=putBox(root,cfg.counterX,cfg.counterH/2,cfg.counterZ,cfg.counterW,cfg.counterH,cfg.counterD,"#647786");putBox(root,cfg.counterX,cfg.counterH+.035,cfg.counterZ,cfg.counterW+.14,.07,cfg.counterD+.1,"#f0f2f4");
-for(const [x,z] of [[4.5,1.6],[5.7,3.25],[5.5,6.4],[4.3,5.65]])standTable(root,x,z);
-addSuspendedFrame(root);
+cfg.standingTables.forEach((p,i)=>registerDraggable(standTable(root,p.x,p.z),"standingTables",i));
+cfg.meetingTables.forEach((p,i)=>registerDraggable(meetingTable(root,p.x,p.z),"meetingTables",i));
+cfg.chairs.forEach((p,i)=>registerDraggable(chair(root,p,i>=8),"chairs",i));
+if(showFrame)addSuspendedFrame(root);
 cfg.steles.forEach((p,i)=>addStele(root,i));
 let problems=cfg.steles.filter(p=>p.x<0||p.z<0||p.x>w||p.z>d).length;
-document.getElementById("status").textContent=(problems?"Achtung: "+problems+" Stelenmittelpunkte außerhalb der Standfläche. ":"")+"Modell aktualisiert. Drei Gangseiten offen; schwebender FKM-Rahmen von "+cfg.frameBottom.toFixed(2)+" bis "+(cfg.frameBottom+cfg.frameHeight).toFixed(2)+" m.";
+const theta=THREE.MathUtils.degToRad(cfg.frameRot);
+const radiusX=(Math.abs(Math.cos(theta))*cfg.frameW+Math.abs(Math.sin(theta))*cfg.frameD)/2;
+const radiusZ=(Math.abs(Math.sin(theta))*cfg.frameW+Math.abs(Math.cos(theta))*cfg.frameD)/2;
+const frameOutside=cfg.frameX-radiusX<0||cfg.frameX+radiusX>w||cfg.frameZ-radiusZ<0||cfg.frameZ+radiusZ>d;
+document.getElementById("status").textContent=
+(problems?"Achtung: "+problems+" Stelenmittelpunkte außerhalb der Standfläche. ":"")+
+(showFrame&&frameOutside?"Achtung: Rahmen ragt über die 8×8-m-Standfläche hinaus. ":"")+
+"Modell aktualisiert. FKM-Rahmen "+(showFrame?"sichtbar":"ausgeblendet")+
+", Unterkante "+cfg.frameBottom.toFixed(2)+" m, Drehung "+cfg.frameRot+"°.";
 }
+// Objekte über Raycasting auswählen; Verschieben in der horizontalen Standebene.
+const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2(),ground=new THREE.Plane(new THREE.Vector3(0,1,0),0);
+let drag=null,dragOffset=new THREE.Vector3(),hitPoint=new THREE.Vector3(),movePending=false;
+function rayAt(e){const rect=renderer.domElement.getBoundingClientRect();pointer.set(((e.clientX-rect.left)/rect.width)*2-1,-((e.clientY-rect.top)/rect.height)*2+1);raycaster.setFromCamera(pointer,camera)}
+function onPointerDown(e){
+ if(e.button!==0)return;
+ rayAt(e);
+ const hits=raycaster.intersectObjects(draggables.map(x=>x.object),true);
+ if(!hits.length)return;
+ let obj=hits[0].object;
+ const candidate=draggables.find(x=>{let cursor=obj;while(cursor){if(cursor===x.object)return true;cursor=cursor.parent}return false});
+ if(!candidate||!raycaster.ray.intersectPlane(ground,hitPoint))return;
+ drag=candidate;dragOffset.set(candidate.object.position.x-hitPoint.x,0,candidate.object.position.z-hitPoint.z);
+ controls.enabled=false;movePending=false;renderer.domElement.classList.add("dragging");
+ renderer.domElement.setPointerCapture(e.pointerId);
+ e.preventDefault();e.stopPropagation();
+ document.getElementById("status").textContent="Ausgewählt: "+candidate.kind+" "+(candidate.index+1)+" – zum Verschieben ziehen.";
+}
+function onPointerMove(e){
+ if(!drag)return;
+ rayAt(e);if(!raycaster.ray.intersectPlane(ground,hitPoint))return;
+ const obj=drag.object;
+ const x=THREE.MathUtils.clamp(hitPoint.x+dragOffset.x,0,cfg.boothW);
+ const z=THREE.MathUtils.clamp(hitPoint.z+dragOffset.z,0,cfg.boothD);
+ obj.position.x=x;obj.position.z=z;
+ cfg[drag.kind][drag.index].x=Number(x.toFixed(3));
+ cfg[drag.kind][drag.index].z=Number(z.toFixed(3));
+ movePending=true;
+ document.getElementById("status").textContent=drag.kind+" "+(drag.index+1)+" → X "+x.toFixed(2)+" m · Z "+z.toFixed(2)+" m";
+}
+function onPointerUp(e){
+ if(!drag)return;
+ drag=null;controls.enabled=true;renderer.domElement.classList.remove("dragging");
+ if(renderer.domElement.hasPointerCapture(e.pointerId))renderer.domElement.releasePointerCapture(e.pointerId);
+ if(movePending){renderInputs();movePending=false}
+}
+renderer.domElement.addEventListener("pointerdown",onPointerDown);
+renderer.domElement.addEventListener("pointermove",onPointerMove);
+renderer.domElement.addEventListener("pointerup",onPointerUp);
+renderer.domElement.addEventListener("pointercancel",onPointerUp);
 const resize=()=>{let b=holder.getBoundingClientRect();renderer.setSize(b.width,b.height,false);camera.aspect=b.width/b.height;camera.updateProjectionMatrix()};new ResizeObserver(resize).observe(holder);resize();
 function cam(mode){if(mode==="iso")camera.position.set(cfg.boothW+5,12,cfg.boothD+7);if(mode==="top")camera.position.set(cfg.boothW/2,18,cfg.boothD/2+.001);if(mode==="visitor")camera.position.set(cfg.boothW+1,1.7,cfg.boothD+4);controls.target.set(cfg.boothW/2,mode==="visitor"?3.2:2.5,cfg.boothD/2);controls.update();document.querySelectorAll("[data-camera]").forEach(b=>b.classList.toggle("active",b.dataset.camera===mode))}
 document.querySelectorAll("[data-camera]").forEach(b=>b.onclick=()=>cam(b.dataset.camera));
+document.getElementById("toggleFrame").onclick=e=>{showFrame=!showFrame;e.target.textContent="FKM-Rahmen: "+(showFrame?"an":"aus");rebuild()};
 document.getElementById("toggleImages").onclick=e=>{showImages=!showImages;e.target.textContent="Grafiken: "+(showImages?"an":"aus");rebuild()};
 document.getElementById("reset").onclick=()=>{cfg=structuredClone(defaults);renderInputs();rebuild();cam("iso")};
 document.getElementById("export").onclick=()=>{const blob=new Blob([JSON.stringify({schema:"fkm-formnext-stand-v1",...cfg},null,2)],{type:"application/json"});let url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="formnext-2026-standmodell.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),3000)};
-document.getElementById("import").onchange=async e=>{try{let val=JSON.parse(await e.target.files[0].text());if(!valid(val)||!Array.isArray(val.steles)||val.steles.length!==5)throw Error("Fünf Stelen fehlen");const candidate=structuredClone(defaults);for(const k of Object.keys(defaults)){if(k==="steles")continue;if(Number.isFinite(val[k])&&val[k]>0&&val[k]<30)candidate[k]=val[k]}candidate.steles=val.steles.map(p=>({x:Number(p.x)||0,z:Number(p.z)||0,rot:Number(p.rot)||0}));cfg=candidate;renderInputs();rebuild()}catch(e){alert("Ungültige Modelldatei: "+e.message)}e.target.value=""};
+document.getElementById("import").onchange=async e=>{try{let val=JSON.parse(await e.target.files[0].text());if(!valid(val)||!Array.isArray(val.steles)||val.steles.length!==5)throw Error("Fünf Stelen fehlen");const candidate=structuredClone(defaults);for(const k of Object.keys(defaults)){if(["steles","standingTables","meetingTables","chairs"].includes(k))continue;if(Number.isFinite(val[k])&&val[k]>0&&val[k]<30)candidate[k]=val[k]}candidate.steles=val.steles.map(p=>({x:Number(p.x)||0,z:Number(p.z)||0,rot:Number(p.rot)||0}));
+for(const key of ["standingTables","meetingTables","chairs"]){
+ if(Array.isArray(val[key])&&val[key].length===defaults[key].length){
+ candidate[key]=val[key].map((p,i)=>({
+ x:Number.isFinite(Number(p.x))?Number(p.x):defaults[key][i].x,
+ z:Number.isFinite(Number(p.z))?Number(p.z):defaults[key][i].z,
+ ...(key==="chairs"?{rot:Number(p.rot)||0}:{})
+ }));
+ }}
+cfg=candidate;renderInputs();rebuild()}catch(e){alert("Ungültige Modelldatei: "+e.message)}e.target.value=""};
 renderInputs();rebuild();cam("iso");renderer.setAnimationLoop(()=>{controls.update();renderer.render(scene,camera)});
 </script></body></html>
