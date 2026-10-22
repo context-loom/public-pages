@@ -7,7 +7,7 @@
 <aside><h2>Maßtabelle <span class="muted">in Metern</span></h2><p class="muted">Standfläche 8 × 8 m bestätigt, alle weiteren Werte sind initiale Näherungen. Eingaben aktualisieren das 3D-Modell direkt. Stelenpositionen sind Mittelpunkte; Drehung in Grad.</p>
 <div id="dimensions"></div><hr class="separator"><h2>Präsentationsstelen</h2><p class="muted">Zwei Kapazitätsstelen mit identischem Kunststoff-/Metallmix an verschiedenen Standrändern. Die Belegung ist ein erster 2026-Entwurf.</p><div id="steles"></div>
 <hr class="separator"><h2>Variante sichern</h2><div class="controls"><button id="export">JSON herunterladen</button><label class="action">JSON einlesen<input type="file" id="import" accept="application/json,.json" style="display:none"></label></div>
-<h3>Planungsstatus</h3><p class="warning">Kein verbindlicher Messestandplan. Die Visualisierung übernimmt nur die Geometrie der Skizze und geschätzte Abmessungen. Türanschläge, Deckenkonstruktion, baurechtliche Standvorgaben und tatsächliche Verkehrsbreiten müssen anhand des Standbauplans überprüft werden.</p>
+<h3>Planungsstatus</h3><p class="warning">Kein verbindlicher Messestandplan. Der schwebende grüne FKM-Rahmen ist nach den perspektivischen Handskizzen angenähert (Unterkante 5 m, Oberkante 7 m). Die tatsächliche Aufhängung, Lastabtragung, Messehöhen und Standfreigaben sind nicht modelliert und müssen durch den Standbauer geprüft werden.</p>
 <p class="muted">Die 2025-Drucklayouts sind als Texturen eingebunden. Für 2026 wird nur Stele 1 im Modell überlagert: <strong>Make-or-Buy</strong> statt des verworfenen Claims.</p><p class="stat" id="status">3D wird geladen …</p></aside></div>
 <script type="module">
 import * as THREE from "three";
@@ -16,7 +16,8 @@ const defaults={
  boothW:8,boothD:8,roomW:2.5,roomTop:2.5,roomBottom:2.5,roomH:2.7,
  counterW:.7,counterD:3,counterH:1.12,counterX:3.35,counterZ:4,
  pedestalW:1,pedestalD:1,pedestalH:2.5,tableD:.65,tableH:1.1,
- steles:[{x:6.85,z:.75,rot:0},{x:6.9,z:2.15,rot:45},{x:6.9,z:5.85,rot:45},{x:6.9,z:4,rot:0},{x:6.85,z:7.2,rot:0}]
+ frameX:5.15,frameZ:4,frameW:5.3,frameD:5.3,frameBottom:5,frameHeight:2,frameThickness:.10,
+ steles:[{x:7.25,z:4,rot:90},{x:7.25,z:.75,rot:0},{x:7.25,z:7.25,rot:0},{x:4,z:.75,rot:0},{x:4,z:7.25,rot:0}]
 };
 const labels=[
 ["Standbreite","boothW",false],["Standtiefe","boothD",false],
@@ -24,7 +25,8 @@ const labels=[
 ["Besprechung unten Tiefe","roomBottom",true],["Raumhöhe","roomH",true],
 ["Thekenbreite","counterW",true],["Thekenlänge","counterD",true],["Thekenhöhe","counterH",true],["Theke X","counterX",true],["Theke Z","counterZ",true],
 ["Stelenbreite","pedestalW",true],["Stelentiefe","pedestalD",true],["Stelenhöhe","pedestalH",true],
-["Stehtisch Ø","tableD",true],["Stehtischhöhe","tableH",true]
+["Stehtisch Ø","tableD",true],["Stehtischhöhe","tableH",true],
+["FKM-Rahmen Mitte X","frameX",true],["FKM-Rahmen Mitte Z","frameZ",true],["Rahmenbreite","frameW",true],["Rahmentiefe","frameD",true],["Rahmen Unterkante","frameBottom",true],["Rahmenhöhe","frameHeight",true],["Rahmenprofil","frameThickness",true]
 ];
 const valid=o=>o&&typeof o==="object";
 let cfg=structuredClone(defaults),showImages=true,meshes=[],textureCache=new Map();
@@ -37,9 +39,9 @@ steleNode.innerHTML='<table class="tbl steles"><thead><tr><th>Stele</th><th>X</t
 document.querySelectorAll("input[data-key]").forEach(el=>el.addEventListener("change",()=>{const k=el.dataset.key,v=Number(el.value);if(!Number.isFinite(v))return;if(k.startsWith("s")){const [index,prop]=k.slice(1).split(".");cfg.steles[Number(index)][prop]=v}else cfg[k]=v;renderInputs();rebuild()}));
 }
 const holder=document.getElementById("canvas"),scene=new THREE.Scene();scene.background=new THREE.Color(0xe7f0f3);
-const camera=new THREE.PerspectiveCamera(47,1,.05,100);camera.position.set(10,12,13);
+const camera=new THREE.PerspectiveCamera(47,1,.05,100);camera.position.set(12,12,14);
 const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;holder.appendChild(renderer.domElement);
-const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(4,0,4);controls.enableDamping=true;controls.maxPolarAngle=Math.PI/2-.025;
+const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(4,2.1,4);controls.enableDamping=true;controls.maxPolarAngle=Math.PI/2-.025;
 scene.add(new THREE.HemisphereLight(0xffffff,0xb4c1c6,2.5));const sun=new THREE.DirectionalLight(0xffffff,2.2);sun.position.set(3,13,1);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-12;sun.shadow.camera.right=12;sun.shadow.camera.top=12;sun.shadow.camera.bottom=-12;sun.shadow.bias=-.001;scene.add(sun);
 const mat=(c,opacity=1)=>new THREE.MeshStandardMaterial({color:c,transparent:opacity<1,opacity,roughness:.78,metalness:0,side:THREE.DoubleSide});
 function putBox(parent,x,y,z,w,h,d,color){let obj=new THREE.Mesh(new THREE.BoxGeometry(Math.max(.005,w),Math.max(.005,h),Math.max(.005,d)),typeof color==="string"||typeof color==="number"?mat(color):color);obj.position.set(x,y,z);obj.receiveShadow=true;obj.castShadow=true;parent.add(obj);return obj}
@@ -66,6 +68,29 @@ if(index===0&&showImages){const can=document.createElement("canvas");can.width=5
 textPlane(g,String(index+1),0,h/2+.12,0,.55,.14,"#19384f");
 return g
 }
+function addSuspendedFrame(parent){
+  // Im Entwurf schwebender, umlaufender Rahmen statt grüner Bodenraute.
+  const g=new THREE.Group();g.position.set(cfg.frameX,cfg.frameBottom+cfg.frameHeight/2,cfg.frameZ);parent.add(g);
+  const w=cfg.frameW,d=cfg.frameD,h=cfg.frameHeight,t=cfg.frameThickness,green="#8dc529";
+  putBox(g,0,0,-d/2,w,h,t,green);putBox(g,0,0,d/2,w,h,t,green);
+  putBox(g,-w/2,0,0,t,h,d,green);putBox(g,w/2,0,0,t,h,d,green);
+  const canvas=document.createElement("canvas");canvas.width=1024;canvas.height=420;
+  const ctx=canvas.getContext("2d");ctx.fillStyle=green;ctx.fillRect(0,0,1024,420);
+  ctx.fillStyle="#fff";ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.font="300 290px Arial, Helvetica, sans-serif";ctx.fillText("FKM",512,215);
+  const tex=new THREE.CanvasTexture(canvas);tex.colorSpace=THREE.SRGBColorSpace;
+  const sign=new THREE.MeshBasicMaterial({map:tex,side:THREE.FrontSide});
+  for(const face of [
+    [0,d/2+t/2+.005,0,w],[0,-d/2-t/2-.005,Math.PI,w],
+    [w/2+t/2+.005,0,Math.PI/2,d],[-w/2-t/2-.005,0,-Math.PI/2,d]
+  ]){const m=new THREE.Mesh(new THREE.PlaneGeometry(face[3],h*.85),sign);
+    m.position.set(face[0],0,face[1]);m.rotation.y=face[2];g.add(m)}
+  const border="#609912";
+  putBox(g,0,h/2-.035,d/2,w,.07,t+.04,border);
+  putBox(g,0,h/2-.035,-d/2,w,.07,t+.04,border);
+  putBox(g,w/2,h/2-.035,0,t+.04,.07,d,border);
+  putBox(g,-w/2,h/2-.035,0,t+.04,.07,d,border);
+}
 function pedestalY(){return cfg.pedestalH/2}
 let root=null;
 function rebuild(){
@@ -83,14 +108,13 @@ putBox(root,r/2,.015,top/2,r,.02,top,"#dee4e6");putBox(root,r/2,.015,d-bottom/2,
 textPlane(root,"Besprechung 1",r/2,.07,top/2,1.7,.34,"#dce3e6","#344b59",Math.PI/2);textPlane(root,"Besprechung 2",r/2,.07,d-bottom/2,1.7,.34,"#dce3e6","#344b59",Math.PI/2);
 const counter=putBox(root,cfg.counterX,cfg.counterH/2,cfg.counterZ,cfg.counterW,cfg.counterH,cfg.counterD,"#647786");putBox(root,cfg.counterX,cfg.counterH+.035,cfg.counterZ,cfg.counterW+.14,.07,cfg.counterD+.1,"#f0f2f4");
 for(const [x,z] of [[4.5,1.6],[5.7,3.25],[5.5,6.4],[4.3,5.65]])standTable(root,x,z);
-const perimeter=new THREE.Group();root.add(perimeter);const v=[[r+.1,4],[4.75,.9],[7.87,4],[4.75,7.25],[r+.1,4]];
-const points=v.map(([x,z])=>new THREE.Vector3(x,.02,z));let geom=new THREE.BufferGeometry().setFromPoints(points);perimeter.add(new THREE.Line(geom,new THREE.LineBasicMaterial({color:"#91c231",depthTest:false})));
+addSuspendedFrame(root);
 cfg.steles.forEach((p,i)=>addStele(root,i));
 let problems=cfg.steles.filter(p=>p.x<0||p.z<0||p.x>w||p.z>d).length;
-document.getElementById("status").textContent=(problems?"Achtung: "+problems+" Stelenmittelpunkte außerhalb der Standfläche. ":"")+"Modell aktualisiert. Drei Gangseiten offen; links Funktionsräume.";
+document.getElementById("status").textContent=(problems?"Achtung: "+problems+" Stelenmittelpunkte außerhalb der Standfläche. ":"")+"Modell aktualisiert. Drei Gangseiten offen; schwebender FKM-Rahmen von "+cfg.frameBottom.toFixed(2)+" bis "+(cfg.frameBottom+cfg.frameHeight).toFixed(2)+" m.";
 }
 const resize=()=>{let b=holder.getBoundingClientRect();renderer.setSize(b.width,b.height,false);camera.aspect=b.width/b.height;camera.updateProjectionMatrix()};new ResizeObserver(resize).observe(holder);resize();
-function cam(mode){if(mode==="iso")camera.position.set(cfg.boothW+4,12,cfg.boothD+5);if(mode==="top")camera.position.set(cfg.boothW/2,15,cfg.boothD/2+.001);if(mode==="visitor")camera.position.set(cfg.boothW+1,1.7,cfg.boothD+2);controls.target.set(cfg.boothW/2,mode==="visitor"?1.3:0,cfg.boothD/2);controls.update();document.querySelectorAll("[data-camera]").forEach(b=>b.classList.toggle("active",b.dataset.camera===mode))}
+function cam(mode){if(mode==="iso")camera.position.set(cfg.boothW+5,12,cfg.boothD+7);if(mode==="top")camera.position.set(cfg.boothW/2,18,cfg.boothD/2+.001);if(mode==="visitor")camera.position.set(cfg.boothW+1,1.7,cfg.boothD+4);controls.target.set(cfg.boothW/2,mode==="visitor"?3.2:2.5,cfg.boothD/2);controls.update();document.querySelectorAll("[data-camera]").forEach(b=>b.classList.toggle("active",b.dataset.camera===mode))}
 document.querySelectorAll("[data-camera]").forEach(b=>b.onclick=()=>cam(b.dataset.camera));
 document.getElementById("toggleImages").onclick=e=>{showImages=!showImages;e.target.textContent="Grafiken: "+(showImages?"an":"aus");rebuild()};
 document.getElementById("reset").onclick=()=>{cfg=structuredClone(defaults);renderInputs();rebuild();cam("iso")};
