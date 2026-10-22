@@ -9,6 +9,7 @@
 | `/` | Öffentliche Startseite mit Projektlinks | Dieses Repository (`index.html`) |
 | `informationsmodell/` | `/informationsmodell/` | `context-loom/pdf-review/docs/informationsmodell/README.md` → `scripts/build-information-model.mjs` |
 | `pdf-review/` | `/pdf-review/` | `context-loom/pdf-review` → erzeugtes `dist/` |
+| `formnext-2026/` | `/formnext-2026/` | `context-loom/_workbench/formnext-2026/` (Stelenreview 2025/2026) |
 | `compliance-traceability/` | `/compliance-traceability/` | `context-loom/compliance-traceability/viewer/index.html` und `examples/trbs-1115-teil-1-2026.json` |
 
 GitHub Pages veröffentlicht `main` aus `/(root)`. Die Startseite verlinkt die veröffentlichten statischen Anwendungen direkt. Die Anwendungen verwenden relative URL-Pfade.
@@ -29,6 +30,7 @@ Das Repository `context-loom/public-pages` veröffentlicht ausschließlich ausdr
 - [Startseite](https://context-loom.github.io/public-pages/)
 - [PDF Review](https://context-loom.github.io/public-pages/pdf-review/)
 - [TRBS 1115 Teil 1](https://context-loom.github.io/public-pages/compliance-traceability/)
+- [Formnext 2026 – Stelenreview](https://context-loom.github.io/public-pages/formnext-2026/)
 
 Die Publishing-Konfiguration unter **Settings → Pages** verwendet `main` aus `/(root)`.
 
