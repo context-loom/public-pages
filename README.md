@@ -6,6 +6,7 @@
 
 | Ordner | Öffentlicher Einstieg | Führende Quelle |
 | --- | --- | --- |
+| `nesting/polycubes/` | `/nesting/polycubes/` | `context-loom/nesting-research/benchmarks/synthetic/polycubes/` → `build_viewer.py` |
 | `/` | Öffentliche Startseite mit Projektlinks | Dieses Repository (`index.html`) |
 | `informationsmodell/` | `/informationsmodell/` | `context-loom/pdf-review/docs/informationsmodell/README.md` → `scripts/build-information-model.mjs` |
 | `pdf-review/` | `/pdf-review/` | `context-loom/pdf-review` → erzeugtes `dist/` |
@@ -27,6 +28,7 @@ GitHub Pages veröffentlicht `main` aus `/(root)`. Die Startseite verlinkt die v
 
 Das Repository `context-loom/public-pages` veröffentlicht ausschließlich ausdrücklich für die Öffentlichkeit bestimmte, statische Artefakte. Einstieg und direkte Links:
 
+- [Polycubes – synthetische Nesting-Prüfkörper](https://context-loom.github.io/public-pages/nesting/polycubes/)
 - [Startseite](https://context-loom.github.io/public-pages/)
 - [PDF Review](https://context-loom.github.io/public-pages/pdf-review/)
 - [TRBS 1115 Teil 1](https://context-loom.github.io/public-pages/compliance-traceability/)
@@ -64,3 +66,17 @@ und ein QIF-/AQDEF-Vergleich. Zehn Schema-/Semantikprüfungen im Quellrepository
 Syntax, Navigationsanker und eindeutige SVG-Referenzen wurden geprüft; die vier
 neuen Diagramme wurden als SVG gerendert und visuell geprüft. Ein vollständiger
 Browserlauf war mangels installiertem Chromium nicht ausführbar.
+
+## Polycubes
+
+Drehbare SVG-Ansichten von zehn eigenen synthetischen Würfelbausteinen mit
+Beschreibungen, zwei illustrierten Referenzfüllungen, Katalog und Benchmarkfällen
+als JSON sowie zehn kleinen ASCII-STL-Downloads (Rastermaß 20 mm).
+Ohne JavaScript bleiben die SVG-Bilder und Downloads nutzbar.
+Keine externen Skripte, Fonts, produktiven Bauteile oder vertraulichen Daten.
+
+Führende Quellen: `context-loom/nesting-research/benchmarks/synthetic/polycubes/`.
+Quellrevision: `1dff79d8c9a6175fd15a053c7d2e78ed490e9f24`.
+Im Quellrepository `build_viewer.py --output /tmp/polycubes-public --source-revision <commit>`
+ausführen und ausschließlich die erzeugten Dateien nach `nesting/polycubes/`
+übernehmen. Viewer und Modelle nicht in diesem Ausgabe-Repository weiterentwickeln.

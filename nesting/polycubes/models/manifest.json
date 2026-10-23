@@ -1,0 +1,58 @@
+{
+  "unit": "mm",
+  "cube_edge_mm": 20,
+  "catalog_version": 1,
+  "source_revision": "1dff79d8c9a6175fd15a053c7d2e78ed490e9f24",
+  "shapes": [
+    {
+      "id": "I4",
+      "file": "I4.stl",
+      "volume_mm3": 32000
+    },
+    {
+      "id": "O4",
+      "file": "O4.stl",
+      "volume_mm3": 32000
+    },
+    {
+      "id": "T4",
+      "file": "T4.stl",
+      "volume_mm3": 32000
+    },
+    {
+      "id": "L4",
+      "file": "L4.stl",
+      "volume_mm3": 32000
+    },
+    {
+      "id": "J4",
+      "file": "J4.stl",
+      "volume_mm3": 32000
+    },
+    {
+      "id": "S4",
+      "file": "S4.stl",
+      "volume_mm3": 32000
+    },
+    {
+      "id": "Z4",
+      "file": "Z4.stl",
+      "volume_mm3": 32000
+    },
+    {
+      "id": "tripod4",
+      "file": "tripod4.stl",
+      "volume_mm3": 32000
+    },
+    {
+      "id": "screw4-a",
+      "file": "screw4-a.stl",
+      "volume_mm3": 32000
+    },
+    {
+      "id": "screw4-b",
+      "file": "screw4-b.stl",
+      "volume_mm3": 32000
+    }
+  ]
+}

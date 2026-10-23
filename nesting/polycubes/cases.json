@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "coordinate_unit": "cube_edge",
+  "rotation_policy": "24 proper axis-aligned cube rotations; deduplicate per shape; no reflections",
+  "translation_step": 1,
+  "minimum_gap": 0,
+  "wall_gap": 0,
+  "cases": [
+    {
+      "id": "bars-exact",
+      "container": [
+        4,
+        2,
+        2
+      ],
+      "parts": {
+        "I4": 4
+      },
+      "known_optimum_density": 1,
+      "witness": [
+        {
+          "shape": "I4",
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "rotation": "identity"
+        },
+        {
+          "shape": "I4",
+          "origin": [
+            0,
+            0,
+            1
+          ],
+          "rotation": "identity"
+        },
+        {
+          "shape": "I4",
+          "origin": [
+            0,
+            1,
+            0
+          ],
+          "rotation": "identity"
+        },
+        {
+          "shape": "I4",
+          "origin": [
+            0,
+            1,
+            1
+          ],
+          "rotation": "identity"
+        }
+      ]
+    },
+    {
+      "id": "squares-exact",
+      "container": [
+        2,
+        2,
+        2
+      ],
+      "parts": {
+        "O4": 2
+      },
+      "known_optimum_density": 1,
+      "witness": [
+        {
+          "shape": "O4",
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "rotation": "identity"
+        },
+        {
+          "shape": "O4",
+          "origin": [
+            0,
+            0,
+            1
+          ],
+          "rotation": "identity"
+        }
+      ]
+    },
+    {
+      "id": "mixed-small",
+      "container": [
+        4,
+        4,
+        4
+      ],
+      "parts": {
+        "I4": 1,
+        "O4": 1,
+        "T4": 1,
+        "L4": 1,
+        "J4": 1,
+        "S4": 1,
+        "Z4": 1,
+        "tripod4": 1,
+        "screw4-a": 1,
+        "screw4-b": 1
+      },
+      "known_optimum_density": null
+    },
+    {
+      "id": "mixed-medium",
+      "container": [
+        8,
+        8,
+        8
+      ],
+      "parts": {
+        "I4": 8,
+        "O4": 8,
+        "T4": 8,
+        "L4": 8,
+        "J4": 8,
+        "S4": 8,
+        "Z4": 8,
+        "tripod4": 8,
+        "screw4-a": 8,
+        "screw4-b": 8
+      },
+      "known_optimum_density": null
+    }
+  ]
+}
