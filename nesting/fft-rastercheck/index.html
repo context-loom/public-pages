@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FFT-Nesting · Rastercheck</title>
+<meta name="description" content="Zwei synthetische Rasterprüfungen einer Höhenreferenz für FFT-Nesting.">
+<style>
+:root{font-family:system-ui,sans-serif;color:#233343;background:#f5f7fa}
+body{max-width:860px;margin:auto;padding:24px;line-height:1.6}
+a{color:#155c98}a:focus-visible{outline:3px solid #287fc1;outline-offset:3px}
+h1,h2{line-height:1.2}h2{margin-top:2rem}
+.table{overflow-x:auto}table{width:100%;border-collapse:collapse;background:#fff}
+th,td{padding:.6rem;border-bottom:1px solid #dce4ed;text-align:right;vertical-align:top}
+th:first-child{text-align:left}code{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<nav aria-label="Navigation"><a href="../../">Context Loom / Public Pages</a></nav>
+<main>
+<h1>FFT-Nesting · Rastercheck</h1>
+<p>Zwei synthetische Prüffälle für die geplante Bewertung der Z-Schichtbelegung. Ein isoliertes Python-Prüfskript führte eine Greedy-Höhenreferenz mit FFT-Kollisionsprüfung aus. Stand 10. November 2026.</p>
+<h2>Ausgeführte Höhenreferenz</h2>
+<div class="table" tabindex="0" role="region" aria-label="Ergebnisse je Prüffall">
+<table>
+<thead><tr><th scope="col">Prüffall</th><th scope="col">Platziert</th><th scope="col">Bauhöhe</th><th scope="col">Spitzenbelegung</th><th scope="col">Standardabweichung</th></tr></thead>
+<tbody>
+<tr><th scope="row">A · Turm und Platten</th><td>7 / 7</td><td>30,0 mm</td><td>276 von 896 · 30,80&nbsp;%</td><td>13,39 Prozentpunkte</td></tr>
+<tr><th scope="row">B · U und Einsätze</th><td>4 / 4</td><td>42,5 mm</td><td>368 von 896 · 41,07&nbsp;%</td><td>13,61 Prozentpunkte</td></tr>
+</tbody>
+</table>
+</div>
+<p>Die belegten Zellen je Rasterebene, vom Boden bis zur Oberkante:</p>
+<ul>
+<li><strong>A</strong> · 36, 276, 276, 36, 36, 276, 276, 36, 36, 276, 276, 36.</li>
+<li><strong>B</strong> · 224, 368, 368, 368, 368, 224, 0, 144, 144, 144, 144, 0, 0, 144, 144, 144, 144.</li>
+</ul>
+<p>Die Spitzenbelegung ist der größte belegte Flächenanteil einer Rasterebene. Die Standardabweichung umfasst alle Ebenen bis zur Bauhöhe, einschließlich leerer Ebenen dazwischen.</p>
+<h2>Geometrische Referenzwerte</h2>
+<p>Für A ergibt eine analytisch konstruierte Anordnung bei ebenfalls 30 mm Bauhöhe zwölf Ebenen mit jeweils 156 belegten Zellen. Das entspricht 17,41&nbsp;% Spitzenbelegung und 0 Prozentpunkten Standardabweichung. Die Greedy-Höhenreferenz erzeugte das oben gezeigte Profil.</p>
+<p>Für B bestätigte die FFT-Kollisionsprüfung einen Einsatz in der U-Tasche bei relativem Rasteroffset (6, 6, 0). Die Höhenreferenz wählte für den ersten Einsatz den relativen Offset (6, 6, 1).</p>
+<h2>Aufbau und Aussagegrenze</h2>
+<p>Das Raster umfasste 32 × 28 × 20 Zellen bei 2,5 mm Rastermaß. Die Abstandsvorgabe wurde durch zwei Iterationen flächenbenachbarter Rasterdilatation umgesetzt. Rotationen waren fixiert. A enthielt einen Turm (6 × 6 × 12 Zellen) und sechs Platten (je 12 × 10 × 2). B enthielt ein U (24 × 20 × 6, Steg und Schenkel je vier Zellen breit) und drei Einsätze (je 12 × 12 × 4). Der Anker lag mittig am Boden. Weitere Teile wurden nach resultierender Bauhöhe, Schwerpunktabstand zur bestehenden Belegung und den Koordinaten Z, Y, X ausgewählt.</p>
+<p>Die 20 geplanten Vergleichsläufe stehen aus. Die Belegungswerte beschreiben die Rastergeometrie. Gemessene SLS-Schichtzeiten liegen für diese Prüffälle nicht vor.</p>
+<p>FFT-Kollisionsroutine aus Revision <code>b1ec5f5fa7f0797a080aefcb958c84992dfb289f</code>. Prüfumgebung Python 3.12.14, NumPy 2.3.5 und SciPy 1.17.0.</p>
+</main>
+</body>
+</html>

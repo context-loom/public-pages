@@ -6,6 +6,7 @@
 
 | Ordner | Öffentlicher Einstieg | Führende Quelle |
 | --- | --- | --- |
+| `nesting/fft-rastercheck/` | `/nesting/fft-rastercheck/` | Isolierter Rastercheck mit FFT-Kollisionsroutine aus `b1ec5f5` |
 | `nesting/polycubes/` | `/nesting/polycubes/` | `context-loom/nesting-research/benchmarks/synthetic/polycubes/` → `build_viewer.py` |
 | `/` | Öffentliche Startseite mit Projektlinks | Dieses Repository (`index.html`) |
 | `informationsmodell/` | `/informationsmodell/` | `context-loom/pdf-review/docs/informationsmodell/README.md` → `scripts/build-information-model.mjs` |
@@ -28,6 +29,7 @@ GitHub Pages veröffentlicht `main` aus `/(root)`. Die Startseite verlinkt die v
 
 Das Repository `context-loom/public-pages` veröffentlicht ausschließlich ausdrücklich für die Öffentlichkeit bestimmte, statische Artefakte. Einstieg und direkte Links:
 
+- [FFT-Nesting – Rastercheck zur Schichtbelegung](https://context-loom.github.io/public-pages/nesting/fft-rastercheck/)
 - [Polycubes – synthetische Nesting-Prüfkörper](https://context-loom.github.io/public-pages/nesting/polycubes/)
 - [Startseite](https://context-loom.github.io/public-pages/)
 - [PDF Review](https://context-loom.github.io/public-pages/pdf-review/)
