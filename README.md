@@ -8,6 +8,7 @@
 | --- | --- | --- |
 | `nesting/fft-rastercheck/` | `/nesting/fft-rastercheck/` | Isolierter Rastercheck mit FFT-Kollisionsroutine aus `b1ec5f5` |
 | `nesting/polycubes/` | `/nesting/polycubes/` | `context-loom/nesting-research/benchmarks/synthetic/polycubes/` → `build_viewer.py` |
+| `lego/batmobil/` | `/lego/batmobil/` | Eigenes OpenSCAD-Modell, generierte STL und Vorschau | 
 | `/` | Öffentliche Startseite mit Projektlinks | Dieses Repository (`index.html`) |
 | `informationsmodell/` | `/informationsmodell/` | `context-loom/pdf-review/docs/informationsmodell/README.md` → `scripts/build-information-model.mjs` |
 | `pdf-review/` | `/pdf-review/` | `context-loom/pdf-review` → erzeugtes `dist/` |
@@ -31,6 +32,7 @@ Das Repository `context-loom/public-pages` veröffentlicht ausschließlich ausdr
 
 - [FFT-Nesting – Rastercheck zur Schichtbelegung](https://context-loom.github.io/public-pages/nesting/fft-rastercheck/)
 - [Polycubes – synthetische Nesting-Prüfkörper](https://context-loom.github.io/public-pages/nesting/polycubes/)
+- [Batmobil – Batwing-Heckspoiler](https://context-loom.github.io/public-pages/lego/batmobil/)
 - [Startseite](https://context-loom.github.io/public-pages/)
 - [PDF Review](https://context-loom.github.io/public-pages/pdf-review/)
 - [TRBS 1115 Teil 1](https://context-loom.github.io/public-pages/compliance-traceability/)
@@ -82,3 +84,13 @@ Quellrevision: `1dff79d8c9a6175fd15a053c7d2e78ed490e9f24`.
 Im Quellrepository `build_viewer.py --output /tmp/polycubes-public --source-revision <commit>`
 ausführen und ausschließlich die erzeugten Dateien nach `nesting/polycubes/`
 übernehmen. Viewer und Modelle nicht in diesem Ausgabe-Repository weiterentwickeln.
+
+## LEGO-Batmobil: Batwing-Heckspoiler
+
+Öffentlicher Modell-Prototyp mit 78 × 26 × 4,4 mm, 2×2-LEGO-Noppenraster
+(8 mm Abstand) und vier Steckaufnahmen, noch nicht praktisch getestet.
+Gedruckt werden soll auf dem Bambu Lab A1 mit 0,2-mm-Düse (PLA,
+0,10-mm-Schichthöhe). Das eigenständige parametrische Modell liegt als
+`lego/batmobil/batwing_spoiler.scad` (CC0); STL und PNG-Vorschau werden
+mittels GitHub Actions aus dieser Datei erzeugt. Das Repository enthält
+keine LEGO- oder Batman-Markengrafiken oder Fremdmodelle.
