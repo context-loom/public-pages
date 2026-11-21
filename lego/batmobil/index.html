@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Batwing-Heckspoiler für LEGO-kompatible Fahrzeuge: Vorschau, STL-Download und parametrische OpenSCAD-Datei.">
+  <title>Batwing-Heckspoiler – LEGO-Batmobil-Zubehör</title>
+  <style>
+    :root{color-scheme:dark;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#0d121c;color:#edf1f8}
+    *{box-sizing:border-box}body{margin:0}a{color:#a9caff}a:focus-visible{outline:3px solid #80a9ff;outline-offset:4px}
+    .top{border-bottom:1px solid #273143;background:#111a27;padding:16px max(22px,calc((100vw - 1060px)/2))}
+    .top a{text-decoration:none;color:#c8d4e7;font-size:.95rem}
+    main{max-width:1060px;margin:auto;padding:40px 22px 72px}
+    .eyebrow{text-transform:uppercase;letter-spacing:.13em;color:#b0c6e9;font-size:.78rem;font-weight:750;margin:0 0 11px}
+    h1{font-size:clamp(2.15rem,6vw,3.75rem);line-height:1.07;letter-spacing:-.04em;margin:0 0 19px}
+    .lead{font-size:1.1rem;max-width:790px;color:#c3ccdc;line-height:1.65;margin:0 0 27px}
+    .hero{background:linear-gradient(145deg,#24364c,#172235);border:1px solid #3a4b63;border-radius:18px;overflow:hidden}
+    .hero img{width:100%;height:auto;display:block;aspect-ratio:5/3;object-fit:contain;background:#f3f3f5}
+    .hero svg{display:block;width:100%;height:auto;max-height:580px}
+    figcaption{font-size:.89rem;color:#bcc8d8;margin:0;padding:12px 18px;background:#142034;border-top:1px solid #35455c}
+    figure{margin:0}
+    .two{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(250px,1fr);gap:22px;margin-top:25px}
+    .panel{background:#141e2b;border:1px solid #2b3c51;border-radius:14px;padding:23px}
+    h2{font-size:1.24rem;margin:0 0 15px}
+    p{line-height:1.62}p:last-child{margin-bottom:0}
+    .actions{display:flex;flex-wrap:wrap;gap:11px;margin:0 0 19px}
+    .button{display:inline-flex;align-items:center;justify-content:center;min-height:45px;padding:11px 17px;text-decoration:none;border-radius:8px;border:1px solid #667b99;font-weight:700;color:#eef5ff}
+    .button.primary{background:#9ec3ff;border-color:#9ec3ff;color:#132037}
+    .button:hover{filter:brightness(1.08)}
+    dl{margin:0;display:grid;grid-template-columns:1fr auto;gap:11px 13px}
+    dt{color:#bec9db}dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
+    .hint{color:#bec8d8;font-size:.92rem}
+    .warning{border-left:3px solid #f7ce75;padding-left:13px;color:#e7d9b8;margin-top:18px}
+    footer{border-top:1px solid #283548;text-align:center;padding:23px;color:#9baac1;font-size:.84rem}
+    @media(max-width:700px){.two{grid-template-columns:1fr}main{padding-top:29px}.panel{padding:19px}}
+  </style>
+</head>
+<body>
+  <header class="top"><a href="../../">← Context Loom / Public Pages</a></header>
+  <main>
+    <p class="eyebrow">3D-Druck · Batman-inspiriert · Prototyp 01</p>
+    <h1>Batwing-Heckspoiler</h1>
+    <p class="lead">Ein selbst konstruierter Fledermaus-Heckspoiler zum Aufstecken auf ein LEGO-kompatibles Fahrzeug. Für den Bambu Lab A1 mit 0,2-mm-Düse entworfen – als offenes, parametrisches Experiment.</p>
+    <figure class="hero">
+      <img src="./batwing_spoiler.png" alt="Schrägansicht des 3D-Modells mit ausgeprägten Flügelspitzen und zentraler Erhöhung" id="preview">
+      <svg id="fallback" hidden viewBox="0 0 840 460" role="img" aria-label="Schematische Draufsicht des Batwing-Heckspoilers">
+        <rect width="840" height="460" fill="#dfe5ec"/>
+        <g transform="translate(420 240) scale(8 -8)">
+          <path d="M 0,-6 L 8,-8 17,-9 26,-12 39,-16 37,-4 30,2 25,6 23,0 19,1 16,10 10,7 7,3 0,7 -7,3 -10,7 -16,10 -19,1 -23,0 -25,6 -30,2 -37,-4 -39,-16 -26,-12 -17,-9 -8,-8 Z" fill="#33455d" stroke="#101824" stroke-width=".35"/>
+          <rect x="-10" y="-10" width="20" height="20" rx="2" fill="#1b2738" stroke="#8798b2" stroke-width=".35"/>
+        </g>
+        <text x="420" y="42" fill="#293c55" text-anchor="middle" font-size="22" font-family="system-ui">Schematische Draufsicht</text>
+      </svg>
+      <figcaption>Eigenes Modell; die hier dargestellte Passung wurde noch nicht am Fahrzeug getestet.</figcaption>
+    </figure>
+    <div class="two">
+      <section class="panel">
+        <h2>Modell herunterladen</h2>
+        <div class="actions">
+          <a class="button primary" href="./batwing_spoiler.stl" download>STL herunterladen</a>
+          <a class="button" href="./batwing_spoiler.scad" download>OpenSCAD-Quelle</a>
+        </div>
+        <p>Die STL-Datei lässt sich in Bambu Studio öffnen. In der OpenSCAD-Datei können insbesondere <code>socket_d</code> und <code>socket_depth</code> angepasst werden.</p>
+        <p class="hint">Das Modell wird aus der veröffentlichten OpenSCAD-Datei mit OpenSCAD generiert. Quelle: <a href="https://github.com/context-loom/public-pages/tree/main/lego/batmobil">GitHub</a>.</p>
+        <p class="warning"><strong>Passung erst prüfen:</strong> Die vier Steckaufnahmen sind noch nicht an konkreten LEGO-Teilen validiert. Nicht mit Gewalt auf Noppen drücken. Ein kleiner Passungstest vor dem endgültigen Druck ist sinnvoll.</p>
+      </section>
+      <section class="panel">
+        <h2>Maße &amp; Druck</h2>
+        <dl>
+          <dt>Abmessungen</dt><dd>78 × 26 × 4,4 mm</dd>
+          <dt>Anschluss</dt><dd>4 Noppen (2 × 2)</dd>
+          <dt>Noppenraster</dt><dd>8,0 mm</dd>
+          <dt>Steckaufnahme Ø</dt><dd>5,10 mm</dd>
+          <dt>Stecktiefe</dt><dd>2,20 mm</dd>
+          <dt>Drucker</dt><dd>Bambu Lab A1</dd>
+          <dt>Düse</dt><dd>0,2 mm</dd>
+          <dt>Material (Startwert)</dt><dd>PLA</dd>
+          <dt>Schichthöhe (Startwert)</dt><dd>0,10 mm</dd>
+          <dt>Stützen</dt><dd>nicht vorgesehen</dd>
+        </dl>
+      </section>
+    </div>
+    <p class="hint" style="margin-top:27px">Privates, eigenständiges Fan-Projekt; keine Verbindung zu LEGO oder den Rechteinhabern von Batman. Modell-Lizenz: CC0.</p>
+  </main>
+  <footer>Context Loom · LEGO-kompatible 3D-Druckmodelle · Prototyp, keine Produktfreigabe</footer>
+  <script>
+    const image = document.getElementById('preview');
+    image.addEventListener('error', () => {
+      image.hidden = true;
+      document.getElementById('fallback').hidden = false;
+    });
+  </script>
+</body>
+</html>
